@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation Viewer</title>
+    <link rel="stylesheet" href="structure.css">
+    <link rel="stylesheet" href="theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div id="fileOpenArea">
+            <button id="openFileBtn">Open JSON File</button>
+            <div id="currentFilePath"></div>
+        </div>
+        <div id="searchContainer" style="display: none;">
+            <input type="text" id="searchBar" placeholder="Search conversations...">
+            <div id="tagFilter"></div>
+        </div>
+        <div id="messageList"></div>
+    </div>
+    <div id="messageContent"></div>
+    <script src="scripts.js"></script>
+</body>
+</html>

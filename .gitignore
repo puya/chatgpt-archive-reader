@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Data files (user-specific archives and tags)
+data/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+*.tmp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Electron
+app/dist/
+release/

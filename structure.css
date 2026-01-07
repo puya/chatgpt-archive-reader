@@ -1,0 +1,173 @@
+body { 
+  margin: 0; 
+  padding: 0;
+  max-width: 100vw; 
+  display: flex; 
+  height: 100vh; 
+  font-family: Arial, sans-serif;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+#sidebar {
+  width: 30%;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#fileOpenArea {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#openFileBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#currentFilePath {
+  margin-top: 10px;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+#searchContainer {
+  margin-bottom: 20px;
+}
+
+#searchBar {
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+#tagFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+#tagFilter button {
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#messageList {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.message { 
+  cursor: pointer; 
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+#messageContent {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#tagArea {
+  position: sticky;
+  top: 0;
+  background-color: inherit;
+  z-index: 1;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#messageTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag-container {
+  padding-top: 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: default;
+  margin-right: 3px;
+}
+
+.remove-tag {
+  margin-left: 5px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tag:hover .remove-tag {
+  opacity: 1;
+}
+
+#addTags {
+
+}
+
+#newTagInput {
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: none;
+}
+
+#addTagBtn {
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.message-wrapper {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.message-wrapper-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-wrapper-content {
+  line-height: 1.5;
+}

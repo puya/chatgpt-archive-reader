@@ -1,0 +1,96 @@
+body {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+#sidebar {
+  background-color: #252526;
+}
+
+#openFileBtn {
+  background-color: #0e639c;
+  color: #ffffff;
+}
+
+#openFileBtn:hover {
+  background-color: #1177bb;
+}
+
+#searchBar {
+  background-color: #3c3c3c;
+  color: #ffffff;
+}
+
+#tagFilter button {
+  background-color: #3c3c3c;
+  color: #ffffff;
+}
+
+#tagFilter button:hover, #tagFilter button.active {
+  background-color: #0e639c;
+}
+
+.message {
+  background-color: #2d2d2d;
+}
+
+.message:hover, .message.active {
+  background-color: #3c3c3c;
+}
+
+.messageTitle {
+  
+}
+
+.messageDate {
+  font-size: 10px;
+  color: #AAA;
+}
+
+#messageContent {
+  background-color: #1e1e1e;
+}
+
+.tag {
+  background-color: #0e639c;
+  color: #ffffff;
+}
+
+#newTagInput {
+  background-color: #3c3c3c;
+  color: #ffffff;
+}
+
+#addTagBtn {
+  background-color: #0e639c;
+  color: #ffffff;
+}
+
+#addTagBtn:hover {
+  background-color: #1177bb;
+}
+
+.message-wrapper.user-msg {
+  background-color: #2b2b2b;
+}
+
+.message-wrapper.chatgpt-msg {
+  background-color: #1e1e1e;
+}
+
+.user-msg-label, .chatgpt-msg-label {
+  color: #8a8a8a;
+}
+
+.user-msg-content {
+  color: #ffffff;
+}
+
+.chatgpt-msg-content {
+  color: #e0e0e0;
+}
+
+.highlight {
+  background-color: #ffd700;
+  color: #000000;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "chatgpt-archive-reader",
+  "version": "1.0.0",
+  "description": "A reader for ChatGPT conversation archives",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --mac --publish never",
+    "deploy": "electron-builder build --mac --publish always"
+  },
+  "build": {
+    "appId": "com.chatgptarchivereader.chatgptarchivereader",
+    "productName": "ChatGPT Archive Reader",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "dmg": {
+      "artifactName": "${productName}-${version}.dmg"
+    },
+    "zip": {
+      "artifactName": "${productName}-${version}-mac.zip"
+    }
+  },
+  "devDependencies": {
+    "electron": "^25.3.1",
+    "electron-builder": "^24.6.3"
+  }
+}
