@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Basic commit message validation
+COMMIT_MSG=$(cat $1)
+
+# Check if commit message is not empty
+if [ -z "$COMMIT_MSG" ]; then
+    echo "❌ Commit message cannot be empty"
+    exit 1
+fi
+
+# Check minimum length
+if [ ${#COMMIT_MSG} -lt 10 ]; then
+    echo "❌ Commit message too short (minimum 10 characters)"
+    exit 1
+fi
+
+echo "✅ Commit message looks good"

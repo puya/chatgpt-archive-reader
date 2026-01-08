@@ -32,8 +32,9 @@
 - **Document as you code** - Add inline comments, update README, document API decisions
 
 ### Git Workflow
-- **Pre-commit hooks**: ESLint + TypeScript checks (prevent broken commits)
-- **Post-commit hooks**: Auto-push to GitHub after successful commits
+- **Pre-commit hooks**: `lint-staged` runs ESLint + TypeScript on staged files
+- **Post-commit hooks**: Auto-push to current branch after successful commits
+- **Commit-msg hooks**: Validate commit message length and format
 - **Branch strategy**: Feature branches for major changes, main for stable
 - **Commit messages**: `[Phase X] Feature: Brief description` format
 
@@ -68,6 +69,8 @@ _Goal: Basic React app with shadcn/ui sidebar, file upload, and conversation dis
   - [x] Create basic SidebarHeader with app branding
   - [x] Add SidebarContent with placeholder groups
   - [x] Create main content area for conversation display
+  - [x] Implement dark mode with auto system detection
+  - [x] Add theme toggle in header
 - [ ] File upload UI
   - [ ] Add "Open Archive" button to sidebar header
   - [ ] Implement file picker with JSON filter

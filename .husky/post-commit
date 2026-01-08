@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Get current branch name
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Auto-push to current branch
+echo "🚀 Auto-pushing to $BRANCH..."
+git push origin "$BRANCH"
+
+if [ $? -eq 0 ]; then
+    echo "✅ Successfully pushed to $BRANCH"
+else
+    echo "❌ Push failed. You may need to push manually."
+fi
