@@ -94,6 +94,7 @@ export function NavProjects() {
                     <SidebarMenuButton
                       onClick={() => handleProjectClick(projectId)}
                       isActive={isActive}
+                      className="group/collapsible"
                     >
                       <ChevronRight className="size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                       <Folder className="size-4" />
@@ -103,7 +104,7 @@ export function NavProjects() {
                       </span>
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
-                  <CollapsibleContent>
+                  <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                     {conversations.map((conversation) => (
                       <SidebarMenuItem key={conversation.id}>
                         <SidebarMenuButton
