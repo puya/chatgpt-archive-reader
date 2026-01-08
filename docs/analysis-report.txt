@@ -1,0 +1,179 @@
+Loading data/conversations.json...
+✅ Loaded 2156 conversations
+
+🔍 Analyzing metadata fields...
+📊 Found 30 metadata fields
+
+🏗️ Analyzing projects and gizmos...
+📁 Found 53 unique gizmo IDs
+🏷️ Gizmo types: {'snorlax': 275, 'gpt': 48}
+📋 Template IDs: 53 unique
+
+🔍 Attempting to extract project names...
+  g-p-695c5d2ac4f481918ad844d64d343add: {'Airbnb Guest Issues'}
+  g-p-686cadf140548191acc20d25327a2baa: {'Media company strategy', 'YOOBEE IP Growth Plan', 'Yoobee channel growth plan', 'Media Company Strategy'}
+  g-p-680044ddd2888191b92efd47e213311f: {'Design update and invoice'}
+  g-p-67f6f442bec08191b02fdd71c03312b1: {'MIFA Co-production Strategy', 'Channel growth strategy', 'KPU Faculty Meeting Collaboration', '3D character design'}
+  g-p-695c03af72388191abc54e9c2aed1d4f: {'Know about me summary'}
+  g-p-6925fa9c9fe08191a93b6f76604c4da9: {'Thailand trip planning', 'Thai alphabet explanation'}
+  g-p-6933ccd30bb08191be589589352e4fe0: {'Test result explanations'}
+  g-p-693cd9847760819197dde6ba18314d98: {'Task management system review'}
+  g-p-68fc0d24d404819192039719f95759e3: {"Yoobee's first Halloween song"}
+  g-p-6937d2713cdc8191b0f149ebc0d5a895: {'Corporate tax filing confusion'}
+  g-p-6933cdab9f748191abeb1a19398ba583: {'Urinalysis result analysis'}
+  g-p-692b59b4033481919ded3023028921a2: {'Stanford application deadlines'}
+  g-p-6925f9970ccc8191af93d69520a861a7: {'Email reply draft'}
+  g-p-6889594c43a08191a8a19a682d8c1415: {'Shoe confusion story', 'Yoobee Umbrella humor tips', 'Launch strategy for Yoobee'}
+  g-p-68556df617148191965e95a281676468: {'Email'}
+  g-p-68f1672e7df8819188687b74f74b09b7: {'Mylo system prompt update'}
+  g-p-6904f3138338819181016f18f2153e26: {'Tax comparison salary dividends'}
+  g-p-68c4aa4859208191aa7a5830be2433b3: {'Logo design brief'}
+  g-p-689a82a5c61c819193147e4d6a1880ae: {'Job fit assessment'}
+  g-p-68e02a2fe680819180b62fe68507011a: {'Summary'}
+  g-p-682d19bfb88c8191bf024f747e9e91bc: {'Jauna and Yoobee Adventure'}
+  g-p-68d5bdc68d288191b38fec3053de01f2: {'Batch images with Nanobanana'}
+  g-UgB95eFzU: {'Slogan ideas for jewelry'}
+  g-p-68a3654dc07c8191a76792e9f67dd5cb: {'Logo design request'}
+  g-p-686cb310018481919666871c42934416: {'Yoobee app pitch', 'IDM eligibility for physical'}
+  g-p-68b0b10908ac8191a49a82e184b1163d: {'Poster design for kids'}
+  g-p-68a7ffd320648191a7291def7dc54b10: {'Analyze song genre'}
+  g-p-68967adae28c819184081f51e9aa9527: {'Image sequence creation'}
+  g-p-68952fe7886481919bc59a63e3e7bcb9: {'Siggraph 2025 Exhibitor Pass'}
+  g-p-6883cdad58f48191b1b46676eaa04c73: {'Animation Program Improvement Research'}
+  g-p-688a43769a2881919237b0a3be3254f6: {'Color character design'}
+  g-2fkFE8rbu: {'Rock Paper Seesaw Drawing'}
+  g-p-687ff8c90ef481918828379013386d57: {'Top AI Video Tools'}
+  g-p-687ea994f7708191a9cd81738e97bc08: {'Wooden Frame with Green Screen'}
+  g-p-68797c15e7fc81918bbe780c02b739e2: {'MIFA Annecy Contacts List'}
+  g-p-682f6fc7991081919129eb9c36d0b990: {'Yoobee App Pitch Ideas'}
+  g-p-68655d5e804c819191bf9b044a7277dd: {'Diet and Workout Plan'}
+  g-p-68198184efc081918d14fa4dc1bfc27a: {'Bowl of Life Floorplan'}
+  g-LH7GDMf70: {'Senior Project Designer Cover Letter'}
+  g-eio4CyLWt: {'Tech Venture Leader Application'}
+  g-ynuq0KLrR: {'Burgers for lunch! 🍔🤣'}
+  g-YB10HshhU: {'Request for 3D Models'}
+  g-rAf4e6nvx: {'LinkedIn Outreach Strategy', 'Cost-Efficient Biz Development'}
+  g-tc0eHXdgb: {'Branding Workshops and Interviews'}
+  g-6MlHy4WPo: {'Brainstorm Workshop - Realistic'}
+  g-vd364I1Zi: {'Modern Building Entrance Design.'}
+  g-LpDlUu6oL: {'Modern Building Entrance Design'}
+  g-eJRvH4169: {'Alien Landscape Prompt'}
+  g-f26Yhzls1: {'Income Generation Collaboration'}
+  g-L6MVCKIsU: {'Lead Generation and Offer Optimization'}
+  g-q9cXVBVrb: {'LinkedIn Lead Gen Strategy'}
+  g-6dnXnZf7S: {'LinkedIn Lead Generation Offer'}
+  g-bZoD0qWT8: {'Pirate Adventure in Amsterdam'}
+
+👤 Analyzing user information...
+📝 Found 12 conversations with user profile data
+🧠 Found 2156 conversations with memory data
+
+📋 Sample user profile data:
+  AI agents Playwright interaction: If you're editing a `.json` config file to globally configure Playwright MCP within **VS Code**, here's how to set it up correctly:
+
+---
+
+## 📍 Where to Place the Playwright MCP JSON
+
+### ✅ **Option A:...
+  Install Context7 MCP: Here’s the correct way to add **Context7** to **Claude Code** using the updated CLI syntax:
+
+---
+
+## ✅ Correct Command
+
+Based on the official guide and community confirmations, the proper syntax is:
+
+...
+  AI IDE Landscape Overview: ## Summary
+
+In investigating existing VS Code plugins for Anthropic’s Cloud Code CLI, we find that Anthropic’s own **Claude Code** extension mainly functions as a launcher, offering minimal integratio...
+
+🧠 Sample memory data:
+  Guest check-in message: {'memory_scope': 'global_enabled', 'is_do_not_remember': False, 'context_scopes': None}
+  Revised opening suggestion: {'memory_scope': 'global_enabled', 'is_do_not_remember': False, 'context_scopes': None}
+  Airbnb Guest Issues: {'memory_scope': 'global_enabled', 'is_do_not_remember': False, 'context_scopes': None}
+
+📊 Analyzing content statistics...
+💬 Total messages: 46969
+🤖 AI models used: {'gpt-5': 318, 'gpt-5-2': 64, 'auto': 2, 'gpt-5-1': 99, 'gpt-5-1-instant': 2, 'gpt-5-thinking': 9, 'gpt-5-instant': 2, 'gpt-4o': 987, 'research': 4, 'o1': 21, 'gpt-4-1-mini': 2, 'o3': 6, 'o4-mini-high': 14, 'gpt-4-1': 6, 'o4-mini': 7, 'gpt-4o-mini': 1, 'gpt-4-5': 4, 'o3-mini-high': 4, 'o3-mini': 1, 'o1-preview': 1, 'gpt-4o-canmore': 4, 'gpt-4': 150, 'gpt-4-gizmo': 1}
+👥 Message types: {'system': 5061, 'user': 15010, 'assistant': 21064, 'tool': 5834}
+📅 Date range: 2022-12-11 to 2026-01-06
+
+📝 Analyzing message content patterns...
+📊 Content types: {'text': 35801, 'user_editable_context': 1190, 'multimodal_text': 3264, 'tether_browsing_display': 594, 'thoughts': 1096, 'reasoning_recap': 583, 'tether_quote': 1225, 'code': 2711, 'execution_output': 396, 'system_error': 66, 'app_pairing_content': 1, 'computer_output': 11, 'sonic_webpage': 31}
+📏 Average message length: 718 characters
+
+================================================================================
+🎯 CHATGPT ARCHIVE ANALYSIS REPORT
+================================================================================
+
+📁 File: conversations.json
+📊 Total conversations: 2156
+🏷️ Conversations with projects: 323
+📋 Standalone conversations: 1833
+📂 Unique projects: 53
+
+🔍 ALL METADATA FIELDS DISCOVERED:
+----------------------------------------
+ 1. async_status: 4, NoneType, 2
+ 2. blocked_urls: list[0]
+ 3. context_scopes: NoneType
+ 4. conversation_id: 695c26ad-2454-832a-aa1a-291de6423af8, 695c5ef9-e248-832f-ae68-4f15ba2a84fc, 6946347f-5e74-8322-994d-24c5fa72c603
+ 5. conversation_origin: NoneType
+ 6. conversation_template_id: g-p-695c5d2ac4f481918ad844d64d343add, g-p-680044ddd2888191b92efd47e213311f, g-p-686cadf140548191acc20d25327a2baa
+ 7. create_time: 1767759652.012402, 1766208654.549755, 1767739070.302101
+ 8. current_node: a49c1d39-3ad5-4b22-97fe-1b5b78b5f84a, 7dd76404-3f23-4e97-babe-f92438a52ef6, 32643347-8a46-41a6-b7d0-2ef9c1ddc5e3
+ 9. default_model_slug: gpt-5-instant, auto, gpt-5-2
+10. disabled_tool_ids: list[0]
+11. gizmo_id: g-p-695c5d2ac4f481918ad844d64d343add, g-p-680044ddd2888191b92efd47e213311f, g-p-686cadf140548191acc20d25327a2baa
+12. gizmo_type: NoneType, gpt, snorlax
+13. id: 695c26ad-2454-832a-aa1a-291de6423af8, 695c5ef9-e248-832f-ae68-4f15ba2a84fc, 6946347f-5e74-8322-994d-24c5fa72c603
+14. is_archived: False, True
+15. is_do_not_remember: False, NoneType
+16. is_read_only: NoneType
+17. is_starred: NoneType
+18. is_study_mode: False
+19. mapping: dict[94 keys], dict[100 keys], dict[12 keys]
+20. memory_scope: project_enabled, global_enabled
+21. moderation_results: list[0]
+22. owner: NoneType
+23. pinned_time: NoneType
+24. plugin_ids: NoneType, list[1], list[3]
+25. safe_urls: list[22], list[6], list[47]
+26. sugar_item_id: NoneType
+27. sugar_item_visible: False
+28. title: Guest check-in message, YOOBEE IP Growth Plan, Image to Video Prompt
+29. update_time: 1767637941.953164, 1767637943.84447, 1767761097.575671
+30. voice: juniper, ember, NoneType
+
+🏗️ PROJECT ANALYSIS:
+----------------------------------------
+Total projects found: 53
+• g-p-67f6f442bec08191b02fdd71c03312b1: 160 conversations
+  └─ Sample: Balloon Garden Media Contract
+• g-p-6925fa9c9fe08191a93b6f76604c4da9: 58 conversations
+  └─ Sample: Getting around Phuket
+• g-p-686cb310018481919666871c42934416: 56 conversations
+  └─ Sample: Prototype description summary
+• g-p-680044ddd2888191b92efd47e213311f: 38 conversations
+  └─ Sample: Gateway Sculpture Project Update
+• g-p-6889594c43a08191a8a19a682d8c1415: 38 conversations
+  └─ Sample: Launch strategy for Yoobee
+
+💾 MEMORY & USER DATA FIELDS:
+----------------------------------------
+• memory_scope: project_enabled, global_enabled
+• is_do_not_remember: False, NoneType
+• context_scopes: NoneType
+• sugar_item_id: NoneType
+• owner: NoneType
+
+🔐 SECURITY & ACCESS FIELDS:
+----------------------------------------
+• safe_urls: present in 4312 conversations
+• blocked_urls: present in 4312 conversations
+• disabled_tool_ids: present in 4312 conversations
+• moderation_results: present in 4312 conversations
+
+================================================================================
