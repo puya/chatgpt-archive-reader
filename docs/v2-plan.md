@@ -4,7 +4,7 @@
 
 **Status**: `[ ]` Not started `[x]` Complete `[~]` In progress
 
-**Latest Change**: _Basic sidebar UI shell implemented and building successfully_
+**Latest Change**: _Dark mode with auto system detection and theme toggle implemented_
 
 **Current Task**: _Phase 1: Add file upload UI to sidebar header_
 
