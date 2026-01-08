@@ -44,6 +44,159 @@ pre {
   margin-bottom: 20px;
 }
 
+#projectsContainer {
+  margin-bottom: 20px;
+}
+
+#projectsContainer h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+#projectList {
+  margin-bottom: 20px;
+}
+
+.project-container {
+  margin-bottom: 2px;
+}
+
+.project {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.project:hover {
+  background-color: #3c3c3c;
+}
+
+.project.all-conversations {
+  background-color: #2d2d2d;
+  border-left-color: #6c757d;
+  font-weight: bold;
+  margin-bottom: 12px;
+  border: 1px solid #3c3c3c;
+}
+
+.project.expandable {
+  border: 1px solid #3c3c3c;
+  background-color: #252526;
+  border-left-color: #28a745;
+}
+
+.project.expandable.active {
+  background-color: #0e639c;
+  border-left-color: #1177bb;
+}
+
+.project.expandable.expanded {
+  background-color: #0e639c;
+  border-left-color: #1177bb;
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.expandIcon {
+  font-size: 12px;
+  color: #666;
+  width: 12px;
+  flex-shrink: 0;
+}
+
+.projectName {
+  font-weight: bold;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.projectCount {
+  font-size: 12px;
+  color: #aaa;
+  background-color: #3c3c3c;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: normal;
+}
+
+.project-conversations {
+  display: none;
+  margin-left: 20px;
+  border-left: 2px solid #3c3c3c;
+  padding-left: 12px;
+  margin-top: 4px;
+}
+
+.project-conversations.expanded {
+  display: block;
+}
+
+.project-conversation {
+  padding: 6px 12px;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-left: 2px solid transparent;
+}
+
+.project-conversation:hover {
+  background-color: #3c3c3c;
+}
+
+.conversationTitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conversationDate {
+  font-size: 11px;
+  color: #666;
+}
+
+.projects-separator {
+  margin: 15px 0;
+  opacity: 0.5;
+}
+
+.standalone-header {
+  padding: 8px 12px 4px 12px;
+  margin-bottom: 4px;
+}
+
+.standalone-header .projectName {
+  color: #6c757d;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.standalone-conversation {
+  padding: 6px 12px;
+  margin-bottom: 2px;
+  margin-left: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-left: 2px solid #6c757d;
+}
+
+.standalone-conversation:hover {
+  background-color: #3c3c3c;
+}
+
 #searchBar {
   padding: 10px;
   width: 100%;

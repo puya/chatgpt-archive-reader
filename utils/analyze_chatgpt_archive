@@ -1,0 +1,5 @@
+#!/bin/bash
+# Wrapper script to make the CLI tool executable without python prefix
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHONPATH="$SCRIPT_DIR" python3 "$SCRIPT_DIR/analyze_chatgpt_archive.py" "$@"
