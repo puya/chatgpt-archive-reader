@@ -4,9 +4,9 @@
 
 **Status**: `[ ]` Not started `[x]` Complete `[~]` In progress
 
-**Latest Change**: _Phase 1 complete - professional sidebar customized for ChatGPT Archive Reader_
+**Latest Change**: _Phase 2 complete - JSON parsing and conversation display_
 
-**Current Task**: _Phase 2: Implement conversation display with JSON parsing_
+**Current Task**: _Phase 3: Enhanced UI features and search_
 
 ---
 
@@ -85,29 +85,29 @@ _Goal: Basic React app with shadcn/ui sidebar, file upload, and conversation dis
 
 ---
 
-## Phase 2: Conversation Display - IN PROGRESS
+## Phase 2: Conversation Display ✅ COMPLETE
 
 _Goal: Display conversations from uploaded JSON with basic message rendering_
 
-- [~] JSON parsing foundation
-  - [ ] Create TypeScript interfaces for Conversation/Message structure
-  - [ ] Implement basic JSON file reading
-  - [ ] Parse conversations array from archive
-  - [ ] Display conversation count in sidebar
-- [ ] Basic conversation list
-  - [ ] Create ConversationList component
-  - [ ] Display conversation titles in sidebar
-  - [ ] Add click handlers for conversation selection
-  - [ ] Show selected conversation in main area
-- [ ] Message display
-  - [ ] Create MessageBubble component with user/assistant styling
-  - [ ] Display message content with basic formatting
-  - [ ] Handle message threading (parent/child relationships)
+- [x] ✅ JSON parsing foundation COMPLETE
+  - [x] Create TypeScript interfaces for Conversation/Message structure
+  - [x] Implement basic JSON file reading with error handling
+  - [x] Parse conversations array from archive
+  - [x] Display conversation count in sidebar
+- [x] ✅ Basic conversation list COMPLETE
+  - [x] Create ConversationList component (integrated into NavProjects)
+  - [x] Display conversation titles in sidebar with expandable projects
+  - [x] Add click handlers for conversation selection
+  - [x] Show selected conversation in main area
+- [x] ✅ Message display COMPLETE
+  - [x] Create MessageBubble component with user/assistant styling
+  - [x] Display message content with basic formatting
+  - [x] Handle message threading (parent/child relationships)
 - [ ] Manual test: Upload JSON, see conversations in sidebar, click to view messages
 
 ---
 
-## Phase 3: Enhanced UI & Search
+## Phase 3: Enhanced UI & Search - IN PROGRESS
 
 _Goal: Add search, better message formatting, and improved UX_
 
