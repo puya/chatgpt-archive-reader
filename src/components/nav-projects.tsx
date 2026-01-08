@@ -104,14 +104,14 @@ export function NavProjects() {
                       </span>
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
-                  <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+                  <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down data-[state=open]:bg-muted/20 rounded-sm">
                     {conversations.map((conversation) => {
                       const isSelected = selectedConversation?.id === conversation.id;
                       return (
                         <SidebarMenuItem key={conversation.id}>
                           <SidebarMenuButton
                             onClick={() => handleConversationClick(conversation)}
-                            className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
+                            className="ml-1 data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
                             isActive={isSelected}
                           >
                             <span className="truncate block overflow-hidden text-ellipsis whitespace-nowrap">
