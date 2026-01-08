@@ -25,7 +25,9 @@ jobs:
       run: npm ci
 
     - name: Build application
-      run: npm run build
+      run: |
+        ls -la
+        npm run build -- --x64
       env:
         # macOS code signing (optional - remove if not using)
         CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
