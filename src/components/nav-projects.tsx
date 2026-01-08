@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronRight, Folder, MessageSquare } from "lucide-react"
+import { ChevronRight, Folder } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -111,11 +111,10 @@ export function NavProjects() {
                         <SidebarMenuItem key={conversation.id}>
                           <SidebarMenuButton
                             onClick={() => handleConversationClick(conversation)}
-                            className="ml-6"
+                            className="ml-6 data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
                             isActive={isSelected}
                           >
-                            <MessageSquare className="size-4" />
-                            <span className="truncate">
+                            <span className="truncate pl-6 block overflow-hidden text-ellipsis whitespace-nowrap">
                               {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
                             </span>
                           </SidebarMenuButton>
@@ -140,10 +139,10 @@ export function NavProjects() {
               <SidebarMenuItem key={conversation.id}>
                 <SidebarMenuButton
                   onClick={() => handleConversationClick(conversation)}
+                  className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
                   isActive={isSelected}
-                >
-                  <MessageSquare className="size-4" />
-                  <span className="truncate">
+                  >
+                  <span className="truncate pl-6 block overflow-hidden text-ellipsis whitespace-nowrap">
                     {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
                   </span>
                 </SidebarMenuButton>
