@@ -43,11 +43,19 @@ npm start
 ```
 
 ### Pre-built Releases
-Download the latest release from the [Releases](https://github.com/yourusername/chatgpt-archive-reader/releases) page:
 
-- **macOS**: Download `.dmg` file, mount it, and drag the app to Applications
-- **Windows**: Download `.exe` installer and run it
-- **Linux**: Download `.AppImage` or `.deb` file depending on your distribution
+Download the latest version directly:
+
+- [**macOS**](https://github.com/puya/chatgpt-archive-reader/releases/latest/download/ChatGPT-Archive-Reader-mac.dmg) - DMG installer (~150MB)
+- [**Windows**](https://github.com/puya/chatgpt-archive-reader/releases/latest/download/ChatGPT-Archive-Reader-win.exe) - EXE installer (~100MB)
+- [**Linux**](https://github.com/puya/chatgpt-archive-reader/releases/latest/download/ChatGPT-Archive-Reader-linux.AppImage) - AppImage (~95MB)
+
+Or visit the [Releases](https://github.com/puya/chatgpt-archive-reader/releases) page for all versions.
+
+#### Installation Instructions
+- **macOS**: Download the `.dmg` file, mount it, and drag the app to Applications
+- **Windows**: Download the `.exe` installer and run it
+- **Linux**: Download the `.AppImage` file, make it executable (`chmod +x filename.AppImage`), and run it
 
 ## Usage
 
