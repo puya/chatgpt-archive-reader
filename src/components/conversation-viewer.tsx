@@ -56,13 +56,19 @@ export function ConversationViewer() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {selectedConversation.messages.map((message, index) => (
-          <MessageBubble
-            key={`${message.id}-${index}`}
-            message={message}
-            isLast={index === selectedConversation.messages.length - 1}
-          />
-        ))}
+        {selectedConversation.messages.length === 0 ? (
+          <div className="text-center text-muted-foreground">
+            No messages found in this conversation
+          </div>
+        ) : (
+          selectedConversation.messages.map((message, index) => (
+            <MessageBubble
+              key={`${message.id}-${index}`}
+              message={message}
+              isLast={index === selectedConversation.messages.length - 1}
+            />
+          ))
+        )}
       </div>
     </div>
   )

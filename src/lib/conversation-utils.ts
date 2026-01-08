@@ -74,10 +74,14 @@ export const processConversationMessages = (mapping: Record<string, MessageNode>
   const messages: ProcessedMessage[] = [];
   const processedNodes = new Set<string>();
 
+  console.log('Processing mapping:', mapping);
+
   // Find root nodes (messages without parents or with null parent)
   const rootNodes = Object.values(mapping).filter(node =>
     !node.parent || node.parent === null || !mapping[node.parent]
   );
+
+  console.log('Root nodes found:', rootNodes.length);
 
   // Process messages in tree order (depth-first)
   const processNode = (node: MessageNode, depth = 0): void => {
@@ -85,10 +89,18 @@ export const processConversationMessages = (mapping: Record<string, MessageNode>
     processedNodes.add(node.id);
 
     const message = node.message;
-    if (!message || !message.content) return;
+    if (!message || !message.content) {
+      console.log('Skipping node - no message or content:', node.id);
+      return;
+    }
 
     const content = extractMessageContent(message.content);
-    if (!content.trim()) return; // Skip empty messages
+    console.log('Extracted content for node:', node.id, 'content length:', content.length);
+
+    if (!content.trim()) {
+      console.log('Skipping empty message for node:', node.id);
+      return; // Skip empty messages
+    }
 
     const processedMessage: ProcessedMessage = {
       id: message.id,
@@ -102,6 +114,7 @@ export const processConversationMessages = (mapping: Record<string, MessageNode>
     };
 
     messages.push(processedMessage);
+    console.log('Added message:', processedMessage.role, 'content preview:', content.substring(0, 50));
 
     // Process children recursively
     node.children.forEach(childId => {
@@ -115,6 +128,7 @@ export const processConversationMessages = (mapping: Record<string, MessageNode>
   // Start processing from root nodes
   rootNodes.forEach(node => processNode(node));
 
+  console.log('Final messages count:', messages.length);
   return messages;
 };
 
@@ -123,6 +137,14 @@ export const processConversationMessages = (mapping: Record<string, MessageNode>
  */
 export const processConversation = (rawConv: Conversation, index: number): ProcessedConversation => {
   const messages = processConversationMessages(rawConv.mapping);
+
+  console.log(`Processing conversation ${index}:`, {
+    id: rawConv.id,
+    title: rawConv.title,
+    mapping: rawConv.mapping,
+    messagesCount: messages.length,
+    firstMessage: messages[0]
+  });
 
   return {
     id: rawConv.id,
