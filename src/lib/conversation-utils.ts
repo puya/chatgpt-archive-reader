@@ -99,29 +99,29 @@ export const processConversationMessages = (mapping: Record<string, unknown>): P
     }
 
     const contentParts = Array.isArray(parts) ? parts : [String(parts)];
-    const content = contentParts.join(' ');
+    const messageContent = contentParts.join(' ');
 
     const author = messageObj.author as unknown;
     const authorObj = author as Record<string, unknown>;
     const role = authorObj?.role as string;
 
     // Skip initial blank system messages (V1 logic)
-    if (role === 'system' && content.trim() === '' && messages.length === 0) {
+    if (role === 'system' && messageContent.trim() === '' && messages.length === 0) {
       console.log('Skipping initial blank system message');
       return;
     }
 
-    if (!content.trim()) {
+    if (!messageContent.trim()) {
       console.log('Skipping empty message content');
       return;
     }
 
-    console.log('Processing message:', role, 'content length:', content.length);
+    console.log('Processing message:', role, 'content length:', messageContent.length);
 
     const processedMessage: ProcessedMessage = {
       id: String(messageObj.id || `msg-${messageIndex}`),
       role: (role as MessageRole) || 'assistant',
-      content,
+      content: messageContent,
       create_time: messageObj.create_time as number || null,
       isFirstMessage: messages.length === 0,
       nodeId: String(nodeObj.id || `node-${messageIndex}`),
