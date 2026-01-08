@@ -1,7 +1,7 @@
 // File reading utilities for ChatGPT Archive Reader
 // Platform abstraction layer for web and desktop file access
 
-import { ArchiveFile, ParseError } from './types';
+import { ArchiveFile, ParseError } from '@/lib/types';
 import { parseArchiveFile } from './conversation-utils';
 
 /**

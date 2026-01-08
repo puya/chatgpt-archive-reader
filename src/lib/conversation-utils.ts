@@ -10,7 +10,7 @@ import {
   ParseError,
   MessageRole,
   ArchiveFile
-} from './types';
+} from '@/lib/types';
 
 /**
  * Safely extract nested properties from objects
