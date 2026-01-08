@@ -1,5 +1,10 @@
 import * as React from "react"
-import { Folder, MessageSquare } from "lucide-react"
+import { ChevronRight, Folder, MessageSquare } from "lucide-react"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -7,23 +12,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useArchiveStore, useFilteredConversations } from "@/lib/store"
+import { useArchiveStore } from "@/lib/store"
 import type { ProcessedConversation } from "@/lib/types"
 
 export function NavProjects() {
   const { currentFile, activeProject, setActiveProject, selectConversation } = useArchiveStore()
 
-  // Get filtered conversations based on current filters
-  const filteredConversations = useFilteredConversations()
-
-  // Group conversations by project for display
+  // Group ALL conversations by project for sidebar display (not filtered)
   const groupedConversations = React.useMemo(() => {
     if (!currentFile) return { projects: {}, standalone: [] }
 
     const projects: Record<string, ProcessedConversation[]> = {}
     const standalone: ProcessedConversation[] = []
 
-    filteredConversations.forEach(conv => {
+    currentFile.conversations.forEach(conv => {
       if (conv.gizmo_id && currentFile.projects[conv.gizmo_id]) {
         if (!projects[conv.gizmo_id]) {
           projects[conv.gizmo_id] = []
@@ -35,7 +37,7 @@ export function NavProjects() {
     })
 
     return { projects, standalone }
-  }, [currentFile, filteredConversations])
+  }, [currentFile])
 
   const handleProjectClick = (projectId: string) => {
     setActiveProject(activeProject === projectId ? null : projectId)
@@ -81,24 +83,47 @@ export function NavProjects() {
       <SidebarGroup>
         <SidebarGroupLabel>Projects</SidebarGroupLabel>
         <SidebarMenu>
-          {/* Individual project conversations as direct items */}
+          {/* Expandable project groups */}
           {Object.entries(groupedConversations.projects).map(([projectId, conversations]) => {
             const project = currentFile.projects[projectId]
             const isActive = activeProject === projectId
 
             return (
-              <SidebarMenuItem key={projectId}>
-                <SidebarMenuButton
-                  onClick={() => handleProjectClick(projectId)}
-                  isActive={isActive}
-                >
-                  <Folder className="size-4" />
-                  <span className="truncate">{project.name}</span>
-                  <span className="ml-auto text-xs text-muted-foreground">
-                    {conversations.length}
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <Collapsible key={projectId} asChild defaultOpen={isActive}>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      onClick={() => handleProjectClick(projectId)}
+                      isActive={isActive}
+                    >
+                      <ChevronRight className="size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      <Folder className="size-4" />
+                      <span className="truncate">{project.name}</span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {conversations.length}
+                      </span>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    {conversations.map((conversation) => (
+                      <SidebarMenuItem key={conversation.id}>
+                        <SidebarMenuButton
+                          onClick={() => handleConversationClick(conversation)}
+                          className="ml-6"
+                        >
+                          <MessageSquare className="size-4" />
+                          <span className="truncate">
+                            {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
+                          </span>
+                          <span className="ml-auto text-xs text-muted-foreground">
+                            {conversation.formattedDate}
+                          </span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             )
           })}
         </SidebarMenu>
