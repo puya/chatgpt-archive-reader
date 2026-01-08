@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronRight, Folder } from "lucide-react"
+import { Folder, FolderOpen } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -92,10 +92,12 @@ export function NavProjects() {
                     <SidebarMenuButton
                       onClick={() => handleProjectClick(projectId)}
                       isActive={isActive}
-                      className="group/collapsible"
                     >
-                      <ChevronRight className="size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      <Folder className="size-4" />
+                      {isActive ? (
+                        <FolderOpen className="size-4" />
+                      ) : (
+                        <Folder className="size-4" />
+                      )}
                       <span className="truncate">{project.name}</span>
                       <span className="ml-auto text-xs text-muted-foreground">
                         {conversations.length}
@@ -109,10 +111,10 @@ export function NavProjects() {
                         <SidebarMenuItem key={conversation.id}>
                           <SidebarMenuButton
                             onClick={() => handleConversationClick(conversation)}
-                            className="ml-6 data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
+                            className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:rounded-md"
                             isActive={isSelected}
                           >
-                            <span className="truncate pl-6 block overflow-hidden text-ellipsis whitespace-nowrap">
+                            <span className="truncate block overflow-hidden text-ellipsis whitespace-nowrap">
                               {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
                             </span>
                           </SidebarMenuButton>
