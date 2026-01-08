@@ -43,7 +43,7 @@ export interface Conversation {
   title: string | null;
   create_time: number;
   update_time: number;
-  mapping: Record<string, MessageNode>;
+  mapping: Record<string, unknown>; // Can be MessageNode or other structures
   moderation_results: unknown[];
   current_node: string;
   plugin_ids: string[] | null;

@@ -5,7 +5,6 @@ import type {
   Conversation,
   ProcessedConversation,
   ProcessedMessage,
-  MessageNode,
   Project,
   ParseError,
   MessageRole,
@@ -70,63 +69,69 @@ export const extractMessageContent = (content: unknown): string => {
  * Process conversation mapping into chronological message array
  * Based on V1's format_conversation_text_with_breaks logic
  */
-export const processConversationMessages = (mapping: Record<string, MessageNode>): ProcessedMessage[] => {
+export const processConversationMessages = (mapping: Record<string, unknown>): ProcessedMessage[] => {
   const messages: ProcessedMessage[] = [];
-  const processedNodes = new Set<string>();
+  let messageIndex = 0;
 
-  console.log('Processing mapping:', mapping);
+  console.log('Processing mapping:', Object.keys(mapping).length, 'nodes');
 
-  // Find root nodes (messages without parents or with null parent)
-  const rootNodes = Object.values(mapping).filter(node =>
-    !node.parent || node.parent === null || !mapping[node.parent]
-  );
-
-  console.log('Root nodes found:', rootNodes.length);
-
-  // Process messages in tree order (depth-first)
-  const processNode = (node: MessageNode, depth = 0): void => {
-    if (processedNodes.has(node.id)) return;
-    processedNodes.add(node.id);
-
-    const message = node.message;
-    if (!message || !message.content) {
-      console.log('Skipping node - no message or content:', node.id);
+  // Process all mapping nodes in order (similar to V1 approach)
+  Object.values(mapping).forEach((node: unknown) => {
+    const nodeObj = node as Record<string, unknown>;
+    const message = nodeObj.message as unknown;
+    if (!message) {
+      console.log('Node missing message:', node);
       return;
     }
 
-    const content = extractMessageContent(message.content);
-    console.log('Extracted content for node:', node.id, 'content length:', content.length);
-
-    if (!content.trim()) {
-      console.log('Skipping empty message for node:', node.id);
-      return; // Skip empty messages
+    const messageObj = message as Record<string, unknown>;
+    const content = messageObj.content as unknown;
+    if (!content || typeof content !== 'object') {
+      console.log('Message missing content:', message);
+      return;
     }
 
+    const contentObj = content as Record<string, unknown>;
+    const parts = contentObj.parts;
+    if (!parts) {
+      console.log('Message content missing parts:', content);
+      return;
+    }
+
+    const contentParts = Array.isArray(parts) ? parts : [String(parts)];
+    const content = contentParts.join(' ');
+
+    const author = messageObj.author as unknown;
+    const authorObj = author as Record<string, unknown>;
+    const role = authorObj?.role as string;
+
+    // Skip initial blank system messages (V1 logic)
+    if (role === 'system' && content.trim() === '' && messages.length === 0) {
+      console.log('Skipping initial blank system message');
+      return;
+    }
+
+    if (!content.trim()) {
+      console.log('Skipping empty message content');
+      return;
+    }
+
+    console.log('Processing message:', role, 'content length:', content.length);
+
     const processedMessage: ProcessedMessage = {
-      id: message.id,
-      role: message.author.role as MessageRole,
+      id: String(messageObj.id || `msg-${messageIndex}`),
+      role: (role as MessageRole) || 'assistant',
       content,
-      create_time: message.create_time,
+      create_time: messageObj.create_time as number || null,
       isFirstMessage: messages.length === 0,
-      nodeId: node.id,
-      parentId: node.parent,
-      childrenIds: node.children
+      nodeId: String(nodeObj.id || `node-${messageIndex}`),
+      parentId: nodeObj.parent as string || null,
+      childrenIds: (nodeObj.children as string[]) || []
     };
 
     messages.push(processedMessage);
-    console.log('Added message:', processedMessage.role, 'content preview:', content.substring(0, 50));
-
-    // Process children recursively
-    node.children.forEach(childId => {
-      const childNode = mapping[childId];
-      if (childNode) {
-        processNode(childNode, depth + 1);
-      }
-    });
-  };
-
-  // Start processing from root nodes
-  rootNodes.forEach(node => processNode(node));
+    messageIndex++;
+  });
 
   console.log('Final messages count:', messages.length);
   return messages;
