@@ -60,18 +60,12 @@ export const useArchiveStore = create<ArchiveState>()(
 
     setParseErrors: (errors) => set({ parseErrors: errors }),
 
-    selectConversation: (conversation) => {
-      console.log('selectConversation called with:', conversation);
-      set({ selectedConversation: conversation });
-    },
+    selectConversation: (conversation) => set({ selectedConversation: conversation }),
 
-    setActiveProject: (projectId) => {
-      console.log('setActiveProject called with:', projectId);
-      set({
-        activeProject: projectId,
-        selectedConversation: null // Clear selection when changing projects
-      });
-    },
+    setActiveProject: (projectId) => set({
+      activeProject: projectId,
+      selectedConversation: null // Clear selection when changing projects
+    }),
 
     setSearchTerm: (term) => set({
       searchTerm: term,

@@ -6,8 +6,6 @@ import type { ProcessedMessage } from "@/lib/types"
 export function ConversationViewer() {
   const { selectedConversation } = useArchiveStore()
 
-  console.log('ConversationViewer render, selectedConversation:', selectedConversation)
-
   if (!selectedConversation) {
     return (
       <div className="flex h-full items-center justify-center">

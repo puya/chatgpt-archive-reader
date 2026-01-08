@@ -44,7 +44,6 @@ export function NavProjects() {
   }
 
   const handleConversationClick = (conversation: ProcessedConversation) => {
-    console.log('Conversation clicked:', conversation)
     selectConversation(conversation)
   }
 
