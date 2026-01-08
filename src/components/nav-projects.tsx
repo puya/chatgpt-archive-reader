@@ -16,7 +16,7 @@ import { useArchiveStore } from "@/lib/store"
 import type { ProcessedConversation } from "@/lib/types"
 
 export function NavProjects() {
-  const { currentFile, activeProject, setActiveProject, selectConversation } = useArchiveStore()
+  const { currentFile, activeProject, selectedConversation, setActiveProject, selectConversation } = useArchiveStore()
 
   // Group ALL conversations by project for sidebar display (not filtered)
   const groupedConversations = React.useMemo(() => {
@@ -105,22 +105,23 @@ export function NavProjects() {
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                    {conversations.map((conversation) => (
-                      <SidebarMenuItem key={conversation.id}>
-                        <SidebarMenuButton
-                          onClick={() => handleConversationClick(conversation)}
-                          className="ml-6"
-                        >
-                          <MessageSquare className="size-4" />
-                          <span className="truncate">
-                            {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
-                          </span>
-                          <span className="ml-auto text-xs text-muted-foreground">
-                            {conversation.formattedDate}
-                          </span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
+                    {conversations.map((conversation) => {
+                      const isSelected = selectedConversation?.id === conversation.id;
+                      return (
+                        <SidebarMenuItem key={conversation.id}>
+                          <SidebarMenuButton
+                            onClick={() => handleConversationClick(conversation)}
+                            className="ml-6"
+                            isActive={isSelected}
+                          >
+                            <MessageSquare className="size-4" />
+                            <span className="truncate">
+                              {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
+                            </span>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
@@ -133,21 +134,22 @@ export function NavProjects() {
       <SidebarGroup>
         <SidebarGroupLabel>Standalone Messages</SidebarGroupLabel>
         <SidebarMenu>
-          {groupedConversations.standalone.map((conversation) => (
-            <SidebarMenuItem key={conversation.id}>
-              <SidebarMenuButton
-                onClick={() => handleConversationClick(conversation)}
-              >
-                <MessageSquare className="size-4" />
-                <span className="truncate">
-                  {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
-                </span>
-                <span className="ml-auto text-xs text-muted-foreground">
-                  {conversation.formattedDate}
-                </span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {groupedConversations.standalone.map((conversation) => {
+            const isSelected = selectedConversation?.id === conversation.id;
+            return (
+              <SidebarMenuItem key={conversation.id}>
+                <SidebarMenuButton
+                  onClick={() => handleConversationClick(conversation)}
+                  isActive={isSelected}
+                >
+                  <MessageSquare className="size-4" />
+                  <span className="truncate">
+                    {conversation.title || `Conversation ${conversation.originalIndex + 1}`}
+                  </span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroup>
     </>
