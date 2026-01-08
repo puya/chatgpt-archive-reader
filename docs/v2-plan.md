@@ -32,9 +32,9 @@
 - **Document as you code** - Add inline comments, update README, document API decisions
 
 ### Git Workflow
-- **Pre-commit hooks**: `lint-staged` runs ESLint + TypeScript on staged files
-- **Post-commit hooks**: Auto-push to current branch after successful commits
-- **Commit-msg hooks**: Validate commit message length and format
+- **✅ Pre-commit hooks**: `lint-staged` runs ESLint + TypeScript on staged files
+- **✅ Post-commit hooks**: Auto-push to current branch after successful commits
+- **✅ Commit-msg hooks**: Validate commit message length and format
 - **Branch strategy**: Feature branches for major changes, main for stable
 - **Commit messages**: `[Phase X] Feature: Brief description` format
 
