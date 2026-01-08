@@ -2,11 +2,24 @@
   "name": "chatgpt-archive-reader",
   "version": "1.0.0",
   "description": "A reader for ChatGPT conversation archives",
+  "author": "Puya Daravi <puya@example.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/chatgpt-archive-reader",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/chatgpt-archive-reader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/chatgpt-archive-reader/issues"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build --mac --publish never",
-    "deploy": "electron-builder build --mac --publish always"
+    "build": "electron-builder build --publish never",
+    "build:mac": "electron-builder build --mac --publish never",
+    "build:win": "electron-builder build --win --publish never",
+    "build:linux": "electron-builder build --linux --publish never",
+    "deploy": "electron-builder build --publish always"
   },
   "build": {
     "appId": "com.chatgptarchivereader.chatgptarchivereader",
@@ -15,12 +28,14 @@
       "output": "dist"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "category": "public.app-category.utilities",
-      "artifactName": "${productName}-${version}-mac.${ext}"
+      "target": "dmg",
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
     }
   },
   "devDependencies": {

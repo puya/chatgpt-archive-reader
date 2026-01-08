@@ -2,6 +2,8 @@
 
 A desktop application for reading and managing ChatGPT conversation archives exported from OpenAI.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Features
 
 - **Archive Loading**: Open ChatGPT conversation archives (JSON format)
@@ -30,12 +32,37 @@ npm start
 
 This will launch the Electron desktop application.
 
+## Installation
+
+### From Source (Development)
+```bash
+git clone https://github.com/yourusername/chatgpt-archive-reader.git
+cd chatgpt-archive-reader
+npm install
+npm start
+```
+
+### Pre-built Releases
+Download the latest release from the [Releases](https://github.com/yourusername/chatgpt-archive-reader/releases) page:
+
+- **macOS**: Download `.dmg` file, mount it, and drag the app to Applications
+- **Windows**: Download `.exe` installer and run it
+- **Linux**: Download `.AppImage` or `.deb` file depending on your distribution
+
 ## Usage
 
+### Getting Your ChatGPT Data
+1. Go to [ChatGPT Settings](https://chat.openai.com/#settings)
+2. Click "Data Controls" → "Export Data"
+3. Download your data archive (this may take some time)
+4. Extract the downloaded ZIP file
+5. Look for `conversations.json` in the extracted folder
+
 ### Opening an Archive
-1. Click the "Open JSON File" button
-2. Select your ChatGPT archive JSON file (usually named `conversations.json`)
-3. The app will load and display all conversations in the sidebar
+1. Launch the ChatGPT Archive Reader app
+2. Click the "Open JSON File" button
+3. Select the `conversations.json` file from your extracted ChatGPT data
+4. The app will load and display all conversations in the sidebar
 
 ### Browsing Conversations
 - Conversations are listed in the left sidebar with title and date
@@ -60,9 +87,18 @@ This will launch the Electron desktop application.
 - Click "All" to show all conversations
 - Click any tag button to filter conversations that have that tag
 
-## File Structure
+## ChatGPT Archive Structure
 
-Your ChatGPT archive should be a JSON file containing an array of conversation objects with this structure:
+When you export your ChatGPT data, you'll receive a ZIP file containing:
+
+- **`conversations.json`** - Main file containing all your conversation data (use this with the app)
+- **`user.json`** - Your account information
+- **`conversations/`** - Directory with additional conversation metadata
+- **`media/`** - Directory containing images, audio files, and other media you uploaded to ChatGPT
+
+### Expected JSON Structure
+
+The `conversations.json` file contains an array of conversation objects with this structure:
 ```json
 [
   {
@@ -117,6 +153,10 @@ npm run deploy
 - **Tags not saving**: Check file permissions in the archive directory
 - **Search not working**: Ensure you're searching within conversation content, not titles
 
+## Contributing
+
+Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to get started.
+
 ## License
 
-This project is open source and available under standard licensing terms.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
