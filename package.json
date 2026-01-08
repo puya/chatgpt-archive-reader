@@ -1,48 +1,30 @@
 {
-  "name": "chatgpt-archive-reader",
-  "version": "1.0.0",
-  "description": "A reader for ChatGPT conversation archives",
-  "author": "Puya Daravi <puya@example.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/yourusername/chatgpt-archive-reader",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/chatgpt-archive-reader.git"
-  },
-  "bugs": {
-    "url": "https://github.com/yourusername/chatgpt-archive-reader/issues"
-  },
-  "main": "main.js",
+  "name": "chatgpt-archive-reader-v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder build --x64 --publish never",
-    "build:mac": "electron-builder build --mac --x64 --publish never",
-    "build:win": "electron-builder build --win --x64 --publish never",
-    "build:linux": "electron-builder build --linux --x64 --publish never",
-    "deploy": "electron-builder build --publish always"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
-  "build": {
-    "appId": "com.chatgptarchivereader.chatgptarchivereader",
-    "productName": "ChatGPT Archive Reader",
-    "directories": {
-      "output": "dist"
-    },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.utilities",
-      "artifactName": "ChatGPT-Archive-Reader-mac.dmg"
-    },
-    "win": {
-      "target": "nsis",
-      "artifactName": "ChatGPT-Archive-Reader-win.exe"
-    },
-    "linux": {
-      "target": "AppImage",
-      "artifactName": "ChatGPT-Archive-Reader-linux.AppImage"
-    }
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "electron": "^25.3.1",
-    "electron-builder": "^24.6.3"
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
   }
 }
