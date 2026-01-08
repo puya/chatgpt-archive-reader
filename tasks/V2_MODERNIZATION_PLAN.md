@@ -895,4 +895,595 @@ export const fileSystem = {
 6. **Performance optimization**
 7. **Launch V2 with enhanced features**
 
+---
+
+## 📄 **ChatGPT Archive File Implementation Details**
+
+### **JSON Structure Deep Dive**
+
+#### **Root Level Structure**
+```json
+{
+  "title": "Conversation Title",
+  "create_time": 1767661306.399968,
+  "update_time": 1767808601.657723,
+  "mapping": {...},
+  "moderation_results": [...],
+  "current_node": "uuid-string",
+  "plugin_ids": null,
+  "conversation_id": "uuid-string",
+  "conversation_template_id": "g-p-xxxxx",
+  "gizmo_id": "g-p-xxxxx",
+  "gizmo_type": "snorlax",
+  "is_archived": false,
+  "is_starred": null,
+  "safe_urls": [...],
+  "blocked_urls": [...],
+  "default_model_slug": "gpt-5-2",
+  "conversation_origin": null,
+  "is_read_only": null,
+  "is_do_not_remember": false,
+  "memory_scope": "global_enabled",
+  "context_scopes": null,
+  "sugar_item_id": null,
+  "sugar_item_visible": false,
+  "owner": null,
+  "voice": null,
+  "async_status": null,
+  "disabled_tool_ids": [],
+  "id": "uuid-string"
+}
+```
+
+#### **Message Mapping Structure**
+```json
+"mapping": {
+  "node-uuid-1": {
+    "id": "node-uuid-1",
+    "message": {
+      "id": "node-uuid-1",
+      "author": {
+        "role": "user|assistant",
+        "name": null,
+        "metadata": {}
+      },
+      "create_time": null,
+      "update_time": null,
+      "content": {
+        "content_type": "text",
+        "parts": ["message content here"]
+      },
+      "status": "finished_successfully",
+      "end_turn": true,
+      "weight": 0.0,
+      "metadata": {},
+      "recipient": "all",
+      "channel": null
+    },
+    "parent": "parent-node-uuid",
+    "children": ["child-node-uuid"]
+  }
+}
+```
+
+### **Content Type Variations**
+
+#### **Standard Text Content**
+```json
+{
+  "content_type": "text",
+  "parts": ["Simple text message"]
+}
+```
+
+#### **User Editable Context**
+```json
+{
+  "content_type": "user_editable_context",
+  "user_profile": "User profile information...",
+  "user_instructions": "System instructions..."
+}
+```
+
+#### **Multi-Part Content**
+```json
+{
+  "content_type": "text",
+  "parts": ["Part 1", "Part 2", "Part 3"]
+}
+```
+
+### **File Size & Memory Considerations**
+
+#### **Large Archive Handling**
+- **File sizes**: 180MB+ JSON files are common
+- **Memory usage**: Full parsing requires ~500MB+ RAM
+- **Parsing time**: 2-5 seconds for large files
+- **Incremental loading**: Consider streaming or chunked parsing
+
+#### **Optimization Strategies**
+```typescript
+// Streaming JSON parsing for large files
+import { createReadStream } from 'fs';
+import { parse } from 'json-stream';
+
+const stream = createReadStream('conversations.json')
+  .pipe(parse('conversations.*'))
+  .on('data', (conversation) => {
+    // Process each conversation incrementally
+    processConversation(conversation);
+  });
+```
+
+### **Data Type Handling**
+
+#### **Timestamp Processing**
+```typescript
+// Convert Unix timestamps to readable dates
+const formatTimestamp = (timestamp: number): string => {
+  if (!timestamp) return 'N/A';
+  return new Date(timestamp * 1000).toLocaleString();
+};
+
+// Handle different timestamp precisions
+const normalizeTimestamp = (timestamp: number): Date => {
+  // Some timestamps are in seconds, some in milliseconds
+  return timestamp > 1e10 ? new Date(timestamp) : new Date(timestamp * 1000);
+};
+```
+
+#### **Null Value Handling**
+```typescript
+// Many fields can be null - handle gracefully
+const safeGet = <T>(obj: any, path: string, defaultValue: T): T => {
+  return path.split('.').reduce((current, key) =>
+    current && current[key] !== undefined ? current[key] : defaultValue, obj);
+};
+
+// Usage
+const model = safeGet(conversation, 'default_model_slug', 'gpt-3.5-turbo');
+const title = safeGet(conversation, 'title', 'Untitled Conversation');
+```
+
+### **Message Threading & Relationships**
+
+#### **Conversation Flow Reconstruction**
+```typescript
+interface MessageNode {
+  id: string;
+  message: Message | null;
+  parent: string | null;
+  children: string[];
+}
+
+const buildMessageTree = (mapping: Record<string, MessageNode>): MessageNode[] => {
+  const nodes = Object.values(mapping);
+  const rootNodes = nodes.filter(node => !node.parent);
+
+  const buildThread = (nodeId: string): MessageNode[] => {
+    const node = mapping[nodeId];
+    if (!node) return [];
+
+    const thread = [node];
+    node.children.forEach(childId => {
+      thread.push(...buildThread(childId));
+    });
+
+    return thread;
+  };
+
+  return rootNodes.flatMap(node => buildThread(node.id));
+};
+```
+
+### **Search & Filtering Implementation**
+
+#### **Content Search Optimization**
+```typescript
+// Pre-index content for faster searching
+class ConversationIndex {
+  private index: Map<string, Set<string>> = new Map();
+
+  add(conversation: Conversation) {
+    const content = this.extractContent(conversation);
+    const words = this.tokenize(content);
+
+    words.forEach(word => {
+      if (!this.index.has(word)) {
+        this.index.set(word, new Set());
+      }
+      this.index.get(word)!.add(conversation.id);
+    });
+  }
+
+  search(query: string): string[] {
+    const queryWords = this.tokenize(query);
+    if (queryWords.length === 0) return [];
+
+    // Find conversations containing ALL query words
+    const resultSets = queryWords.map(word => this.index.get(word) || new Set());
+    const intersection = resultSets.reduce((acc, set) => {
+      return new Set([...acc].filter(id => set.has(id)));
+    });
+
+    return Array.from(intersection);
+  }
+
+  private extractContent(conversation: Conversation): string {
+    let content = `${conversation.title || ''} `;
+
+    // Extract from mapping
+    Object.values(conversation.mapping || {}).forEach(node => {
+      if (node.message?.content?.parts) {
+        content += node.message.content.parts.join(' ') + ' ';
+      }
+    });
+
+    return content;
+  }
+
+  private tokenize(text: string): string[] {
+    return text.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2);
+  }
+}
+```
+
+### **Tag Storage & Persistence**
+
+#### **Tag File Format**
+```json
+{
+  "conversation-index-1": ["tag1", "tag2", "important"],
+  "conversation-index-2": ["work", "urgent"],
+  "conversation-index-3": ["personal"]
+}
+```
+
+#### **Tag Management Implementation**
+```typescript
+class TagManager {
+  private tags: Record<string, string[]> = {};
+  private tagFilePath: string;
+
+  constructor(archivePath: string) {
+    this.tagFilePath = archivePath.replace('.json', '_tags.json');
+    this.loadTags();
+  }
+
+  async loadTags() {
+    try {
+      const content = await fs.readFile(this.tagFilePath, 'utf-8');
+      this.tags = JSON.parse(content);
+    } catch (error) {
+      // File doesn't exist or is invalid
+      this.tags = {};
+    }
+  }
+
+  async saveTags() {
+    const content = JSON.stringify(this.tags, null, 2);
+    await fs.writeFile(this.tagFilePath, content, 'utf-8');
+  }
+
+  getTags(conversationId: string): string[] {
+    return this.tags[conversationId] || [];
+  }
+
+  addTag(conversationId: string, tag: string) {
+    if (!this.tags[conversationId]) {
+      this.tags[conversationId] = [];
+    }
+    if (!this.tags[conversationId].includes(tag)) {
+      this.tags[conversationId].push(tag);
+      this.saveTags();
+    }
+  }
+
+  removeTag(conversationId: string, tag: string) {
+    if (this.tags[conversationId]) {
+      this.tags[conversationId] = this.tags[conversationId].filter(t => t !== tag);
+      this.saveTags();
+    }
+  }
+}
+```
+
+### **Project Identification Algorithm**
+
+#### **Enhanced Project Detection**
+```typescript
+const PROJECT_PATTERNS = [
+  // Explicit project mentions
+  /\bproject\s+["']?([^"'\n]{3,50})["']?/i,
+  /\bworking\s+on\s+["']?([^"'\n]{3,50})["']?/i,
+
+  // Code project indicators
+  /\b(g-p-[a-f0-9]{8,})/,  // gizmo_id pattern
+
+  // Content-based project detection
+  /\b(app|application|system|platform|tool|website)\b/i,
+  /\b(plan|strategy|development|implementation)\b/i
+];
+
+function identifyProjectFromContent(title: string, content: string): string | null {
+  const fullText = `${title} ${content}`.toLowerCase();
+
+  for (const pattern of PROJECT_PATTERNS) {
+    const match = fullText.match(pattern);
+    if (match && match[1]) {
+      const projectName = match[1].trim();
+      if (projectName.length >= 3 && projectName.length <= 50) {
+        return projectName;
+      }
+    }
+  }
+
+  return null;
+}
+```
+
+### **Performance Considerations**
+
+#### **Virtual Scrolling for Large Lists**
+```typescript
+// For conversations with 1000+ items
+import { FixedSizeList as List } from 'react-window';
+
+<List
+  height={600}
+  itemCount={conversations.length}
+  itemSize={50}  // Height of each conversation item
+  width="100%"
+>
+  {({ index, style }) => (
+    <div style={style}>
+      <ConversationItem conversation={conversations[index]} />
+    </div>
+  )}
+</List>
+```
+
+#### **Lazy Loading & Pagination**
+```typescript
+// Load conversations in chunks
+const CONVERSATIONS_PER_PAGE = 50;
+
+function useConversations() {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMore = useCallback(async () => {
+    const start = page * CONVERSATIONS_PER_PAGE;
+    const end = start + CONVERSATIONS_PER_PAGE;
+
+    const newConversations = await loadConversations(start, end);
+    setConversations(prev => [...prev, ...newConversations]);
+    setPage(prev => prev + 1);
+    setHasMore(newConversations.length === CONVERSATIONS_PER_PAGE);
+  }, [page]);
+
+  return { conversations, loadMore, hasMore };
+}
+```
+
+### **Error Handling & Data Validation**
+
+#### **Robust JSON Parsing**
+```typescript
+function safeParseConversation(jsonString: string): Conversation | null {
+  try {
+    const data = JSON.parse(jsonString);
+
+    // Validate required fields
+    if (!data.id || !data.mapping) {
+      console.warn('Invalid conversation structure:', data.id);
+      return null;
+    }
+
+    // Sanitize and normalize data
+    return {
+      ...data,
+      title: data.title || 'Untitled Conversation',
+      create_time: data.create_time || Date.now() / 1000,
+      mapping: data.mapping || {},
+      gizmo_id: data.gizmo_id || null,
+      gizmo_type: data.gizmo_type || null
+    };
+  } catch (error) {
+    console.error('Failed to parse conversation:', error);
+    return null;
+  }
+}
+```
+
+### **Cross-Platform Compatibility**
+
+#### **File Path Handling**
+```typescript
+// Normalize paths for different platforms
+const normalizePath = (path: string): string => {
+  return path.replace(/\\/g, '/'); // Convert Windows backslashes to forward slashes
+};
+
+// Handle different path formats
+const resolveTagFilePath = (archivePath: string): string => {
+  const normalized = normalizePath(archivePath);
+  return normalized.replace(/\.json$/, '_tags.json');
+};
+```
+
+### **Export & Import Features**
+
+#### **Multiple Export Formats**
+```typescript
+async function exportConversations(
+  conversations: Conversation[],
+  format: 'json' | 'csv' | 'markdown'
+): Promise<string> {
+  switch (format) {
+    case 'json':
+      return JSON.stringify(conversations, null, 2);
+
+    case 'csv':
+      return conversationsToCSV(conversations);
+
+    case 'markdown':
+      return conversationsToMarkdown(conversations);
+
+    default:
+      throw new Error(`Unsupported export format: ${format}`);
+  }
+}
+```
+
+### **Web vs Desktop File Handling**
+
+#### **Web App File Operations**
+```typescript
+// File System Access API for web apps
+async function openFileWeb(): Promise<File> {
+  const [fileHandle] = await window.showOpenFilePicker({
+    types: [{
+      description: 'JSON Files',
+      accept: { 'application/json': ['.json'] }
+    }]
+  });
+  return await fileHandle.getFile();
+}
+
+// IndexedDB for tag storage in web apps
+class WebTagStorage {
+  async saveTags(tags: Record<string, string[]>): Promise<void> {
+    const db = await this.openDB();
+    const transaction = db.transaction(['tags'], 'readwrite');
+    const store = transaction.objectStore('tags');
+
+    await store.put({ id: 'user-tags', data: tags });
+  }
+
+  async loadTags(): Promise<Record<string, string[]>> {
+    const db = await this.openDB();
+    const transaction = db.transaction(['tags'], 'readonly');
+    const store = transaction.objectStore('tags');
+
+    const result = await store.get('user-tags');
+    return result?.data || {};
+  }
+}
+```
+
+#### **Desktop App File Operations (Tauri)**
+```typescript
+// Tauri's secure file operations
+async function openFileDesktop(): Promise<string> {
+  const { open } = window.__TAURI__.dialog;
+  const selected = await open({
+    multiple: false,
+    filters: [{
+      name: 'JSON',
+      extensions: ['json']
+    }]
+  });
+
+  if (selected && !Array.isArray(selected)) {
+    const { readTextFile } = window.__TAURI__.fs;
+    return await readTextFile(selected);
+  }
+
+  throw new Error('No file selected');
+}
+
+// Direct file system access for tags
+class DesktopTagStorage {
+  constructor(private archivePath: string) {}
+
+  async saveTags(tags: Record<string, string[]>): Promise<void> {
+    const { writeTextFile } = window.__TAURI__.fs;
+    const tagFilePath = this.archivePath.replace('.json', '_tags.json');
+    await writeTextFile(tagFilePath, JSON.stringify(tags, null, 2));
+  }
+
+  async loadTags(): Promise<Record<string, string[]>> {
+    const { readTextFile, exists } = window.__TAURI__.fs;
+    const tagFilePath = this.archivePath.replace('.json', '_tags.json');
+
+    if (await exists(tagFilePath)) {
+      const content = await readTextFile(tagFilePath);
+      return JSON.parse(content);
+    }
+
+    return {};
+  }
+}
+```
+
+### **TypeScript Type Definitions**
+
+#### **Complete Type System**
+```typescript
+interface Conversation {
+  id: string;
+  title?: string;
+  create_time: number;
+  update_time: number;
+  mapping: Record<string, MessageNode>;
+  conversation_id: string;
+  conversation_template_id?: string;
+  gizmo_id?: string;
+  gizmo_type?: string;
+  default_model_slug?: string;
+  is_archived: boolean;
+  current_node?: string;
+}
+
+interface MessageNode {
+  id: string;
+  message: Message | null;
+  parent: string | null;
+  children: string[];
+}
+
+interface Message {
+  id: string;
+  author: Author;
+  create_time: number | null;
+  update_time: number | null;
+  content: Content;
+  status: string;
+  end_turn: boolean;
+  weight: number;
+  metadata: Record<string, any>;
+  recipient: string;
+  channel: string | null;
+}
+
+interface Author {
+  role: 'user' | 'assistant' | 'system';
+  name: string | null;
+  metadata: Record<string, any>;
+}
+
+interface Content {
+  content_type: 'text' | 'user_editable_context';
+  parts: string[];
+  user_profile?: string;
+  user_instructions?: string;
+}
+
+interface Project {
+  id: string;
+  name: string;
+  conversationIds: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  description?: string;
+}
+```
+
+**This comprehensive implementation guide covers all the technical details discovered during the ChatGPT archive analysis, ensuring robust handling of the complex JSON structure and optimal performance across web and desktop platforms.**
+
 **Ready to modernize your ChatGPT Archive Reader into a professional, React-based application!** 🚀
