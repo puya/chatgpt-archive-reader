@@ -1,9 +1,0 @@
-version: 1.0.0
-files:
-  - url: ChatGPT-Archive-Reader-1.0.0.AppImage
-    sha512: SwX/4X9E5NOjPzoyFYwsbfniYw7BdcyiFybvLE/SUSyvvc6olN6P4f+3EO0251CivEJzBN8JOQSAvg8vTIohVw==
-    size: 96653599
-    blockMapSize: 102707
-path: ChatGPT-Archive-Reader-1.0.0.AppImage
-sha512: SwX/4X9E5NOjPzoyFYwsbfniYw7BdcyiFybvLE/SUSyvvc6olN6P4f+3EO0251CivEJzBN8JOQSAvg8vTIohVw==
-releaseDate: '2026-01-08T00:44:58.100Z'

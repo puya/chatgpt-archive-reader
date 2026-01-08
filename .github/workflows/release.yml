@@ -30,7 +30,7 @@ jobs:
         path: dist/*
 
   release-mac:
-    runs-on: macos-13  # Use Intel macOS runner
+    runs-on: macos-15-intel  # Use Intel macOS runner
 
     steps:
     - name: Check out Git repository
