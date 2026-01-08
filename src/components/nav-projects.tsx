@@ -55,7 +55,6 @@ export function NavProjects() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton disabled>
-                <MessageSquare className="size-4" />
                 Load a JSON file to see conversations
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -66,7 +65,6 @@ export function NavProjects() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton disabled>
-                <MessageSquare className="size-4" />
                 Load a JSON file to see conversations
               </SidebarMenuButton>
             </SidebarMenuItem>
