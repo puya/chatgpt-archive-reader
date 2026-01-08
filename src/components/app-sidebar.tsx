@@ -1,20 +1,14 @@
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
   Bot,
-  Command,
+  FileText,
   Frame,
-  GalleryVerticalEnd,
-  Map,
+  MessageSquare,
   PieChart,
-  Settings2,
-  SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -24,132 +18,109 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
+// ChatGPT Archive Reader specific data
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
+  // File switcher - will contain loaded JSON files
+  files: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      name: "conversations.json",
+      logo: FileText,
+      status: "Loaded",
+      conversationCount: 2156,
     },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    // Future: Support multiple JSON files
+    // {
+    //   name: "work-archive.json",
+    //   logo: MessageSquare,
+    //   status: "Available",
+    //   conversationCount: 0,
+    // },
   ],
-  navMain: [
+  // Grouped conversations by project (like the old "Playground" section)
+  projects: [
     {
-      title: "Playground",
+      title: "Web Development",
       url: "#",
-      icon: SquareTerminal,
+      icon: Frame,
+      isActive: false,
+      items: [
+        {
+          title: "React Component Issues",
+          url: "#",
+        },
+        {
+          title: "Database Schema Design",
+          url: "#",
+        },
+        {
+          title: "API Integration Help",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "AI/ML Research",
+      url: "#",
+      icon: Bot,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Neural Network Architecture",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Dataset Preparation",
           url: "#",
         },
         {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
+          title: "Model Training Issues",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Business Strategy",
       url: "#",
-      icon: BookOpen,
+      icon: PieChart,
+      isActive: false,
       items: [
         {
-          title: "Introduction",
+          title: "Market Analysis Discussion",
           url: "#",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Competitor Research",
           url: "#",
         },
       ],
     },
   ],
-  projects: [
+  // Individual conversations not grouped into projects
+  standaloneConversations: [
     {
-      name: "Design Engineering",
+      name: "Quick Code Review",
       url: "#",
-      icon: Frame,
+      icon: MessageSquare,
     },
     {
-      name: "Sales & Marketing",
+      name: "Personal Planning",
       url: "#",
-      icon: PieChart,
+      icon: MessageSquare,
     },
     {
-      name: "Travel",
+      name: "Random Ideas",
       url: "#",
-      icon: Map,
+      icon: MessageSquare,
+    },
+    {
+      name: "Meeting Notes",
+      url: "#",
+      icon: MessageSquare,
     },
   ],
 }
@@ -158,14 +129,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={data.files} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={data.projects} />
+        <NavProjects projects={data.standaloneConversations} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {/* TODO: Replace with user info from JSON file */}
+        <div className="p-4 text-sm text-muted-foreground">
+          User info from JSON will appear here
+        </div>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

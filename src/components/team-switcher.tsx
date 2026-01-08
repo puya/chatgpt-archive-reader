@@ -23,7 +23,9 @@ export function TeamSwitcher({
   teams: {
     name: string
     logo: React.ElementType
-    plan: string
+    status?: string
+    plan?: string
+    conversationCount?: number
   }[]
 }) {
   const { isMobile } = useSidebar()
@@ -49,7 +51,9 @@ export function TeamSwitcher({
                 <span className="truncate font-semibold">
                   {activeTeam.name}
                 </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                <span className="truncate text-xs">
+                  {activeTeam.status || activeTeam.plan || `${activeTeam.conversationCount} conversations`}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -72,7 +76,12 @@ export function TeamSwitcher({
                 <div className="flex size-6 items-center justify-center rounded-sm border">
                   <team.logo className="size-4 shrink-0" />
                 </div>
-                {team.name}
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{team.name}</span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {team.status || team.plan || `${team.conversationCount || 0} conversations`}
+                  </span>
+                </div>
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
