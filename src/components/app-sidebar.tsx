@@ -1,15 +1,6 @@
 import * as React from "react"
-import {
-  Bot,
-  FileText,
-  Frame,
-  MessageSquare,
-  PieChart,
-} from "lucide-react"
-
-import { NavMain } from "@/components/nav-main"
+import { FileSwitcher } from "@/components/file-switcher"
 import { NavProjects } from "@/components/nav-projects"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -17,128 +8,42 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-
-// ChatGPT Archive Reader specific data
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  // File switcher - will contain loaded JSON files
-  files: [
-    {
-      name: "conversations.json",
-      logo: FileText,
-      status: "Loaded",
-      conversationCount: 2156,
-    },
-    // Future: Support multiple JSON files
-    // {
-    //   name: "work-archive.json",
-    //   logo: MessageSquare,
-    //   status: "Available",
-    //   conversationCount: 0,
-    // },
-  ],
-  // Grouped conversations by project (like the old "Playground" section)
-  projects: [
-    {
-      title: "Web Development",
-      url: "#",
-      icon: Frame,
-      isActive: false,
-      items: [
-        {
-          title: "React Component Issues",
-          url: "#",
-        },
-        {
-          title: "Database Schema Design",
-          url: "#",
-        },
-        {
-          title: "API Integration Help",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "AI/ML Research",
-      url: "#",
-      icon: Bot,
-      isActive: true,
-      items: [
-        {
-          title: "Neural Network Architecture",
-          url: "#",
-        },
-        {
-          title: "Dataset Preparation",
-          url: "#",
-        },
-        {
-          title: "Model Training Issues",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Business Strategy",
-      url: "#",
-      icon: PieChart,
-      isActive: false,
-      items: [
-        {
-          title: "Market Analysis Discussion",
-          url: "#",
-        },
-        {
-          title: "Competitor Research",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  // Individual conversations not grouped into projects
-  standaloneConversations: [
-    {
-      name: "Quick Code Review",
-      url: "#",
-      icon: MessageSquare,
-    },
-    {
-      name: "Personal Planning",
-      url: "#",
-      icon: MessageSquare,
-    },
-    {
-      name: "Random Ideas",
-      url: "#",
-      icon: MessageSquare,
-    },
-    {
-      name: "Meeting Notes",
-      url: "#",
-      icon: MessageSquare,
-    },
-  ],
-}
+import { useArchiveStore } from "@/lib/store"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { currentFile, loadError, parseErrors } = useArchiveStore()
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.files} />
+        <FileSwitcher />
+        {loadError && (
+          <div className="px-4 py-2 text-xs text-red-600 bg-red-50 rounded-md mx-2">
+            Error: {loadError}
+          </div>
+        )}
+        {parseErrors.length > 0 && (
+          <div className="px-4 py-2 text-xs text-yellow-600 bg-yellow-50 rounded-md mx-2">
+            {parseErrors.length} parsing errors - check console
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.projects} />
-        <NavProjects projects={data.standaloneConversations} />
+        <NavProjects />
       </SidebarContent>
       <SidebarFooter>
         {/* TODO: Replace with user info from JSON file */}
         <div className="p-4 text-sm text-muted-foreground">
-          User info from JSON will appear here
+          {currentFile ? (
+            <div className="space-y-1">
+              <div>Archive loaded successfully</div>
+              <div className="text-xs">
+                {currentFile.totalConversations} conversations
+              </div>
+            </div>
+          ) : (
+            "Load a conversations.json file to get started"
+          )}
         </div>
       </SidebarFooter>
       <SidebarRail />
