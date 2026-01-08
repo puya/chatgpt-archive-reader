@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   release-linux:
     runs-on: ubuntu-latest
@@ -33,6 +36,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: dist/*
 
   release-mac:
@@ -63,6 +67,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: dist/*
 
   release-windows:
@@ -93,4 +98,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: dist/*
