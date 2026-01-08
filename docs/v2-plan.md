@@ -4,9 +4,9 @@
 
 **Status**: `[ ]` Not started `[x]` Complete `[~]` In progress
 
-**Latest Change**: _V2 base setup complete - React project initialized, files reorganized_
+**Latest Change**: _Basic sidebar UI shell implemented and building successfully_
 
-**Current Task**: _Phase 1: Install dependencies and continue React setup_
+**Current Task**: _Phase 1: Add file upload UI to sidebar header_
 
 ---
 
@@ -58,16 +58,16 @@ _Goal: Basic React app with shadcn/ui sidebar, file upload, and conversation dis
 
 **Data Analysis Complete**: 2156 conversations, 53 projects, complex message threading understood
 
-- [ ] Project setup
-  - [ ] Create `chatgpt-archive-reader-v2/` directory
-  - [ ] Initialize React 19 + TypeScript + Vite 5+ project
-  - [ ] Install shadcn/ui with sidebar component
-  - [ ] Set up basic folder structure (src/, components/, etc.)
-- [ ] Basic UI shell
-  - [ ] Implement shadcn/ui SidebarProvider and Sidebar layout
-  - [ ] Create basic SidebarHeader with app branding
-  - [ ] Add SidebarContent with placeholder groups
-  - [ ] Create main content area for conversation display
+- [x] Project setup
+  - [x] Create `chatgpt-archive-reader-v2/` directory
+  - [x] Initialize React 19 + TypeScript + Vite 5+ project
+  - [x] Install shadcn/ui with sidebar component
+  - [x] Set up basic folder structure (src/, components/, etc.)
+- [x] Basic UI shell
+  - [x] Implement shadcn/ui SidebarProvider and Sidebar layout
+  - [x] Create basic SidebarHeader with app branding
+  - [x] Add SidebarContent with placeholder groups
+  - [x] Create main content area for conversation display
 - [ ] File upload UI
   - [ ] Add "Open Archive" button to sidebar header
   - [ ] Implement file picker with JSON filter
