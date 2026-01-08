@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Folder, MessageSquare } from "lucide-react"
 import {
   SidebarGroup,
