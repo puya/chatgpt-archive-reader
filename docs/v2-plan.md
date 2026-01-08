@@ -4,7 +4,7 @@
 
 **Status**: `[ ]` Not started `[x]` Complete `[~]` In progress
 
-**Latest Change**: _Dark mode with auto system detection and theme toggle implemented_
+**Latest Change**: _Advanced sidebar-07 design implemented - professional navigation with collapsible menus_
 
 **Current Task**: _Phase 1: Add file upload UI to sidebar header_
 
@@ -71,6 +71,7 @@ _Goal: Basic React app with shadcn/ui sidebar, file upload, and conversation dis
   - [x] Create main content area for conversation display
   - [x] Implement dark mode with auto system detection
   - [x] Add theme toggle in header
+  - [x] Set up git hooks (pre-commit linting, auto-push)
 - [ ] File upload UI
   - [ ] Add "Open Archive" button to sidebar header
   - [ ] Implement file picker with JSON filter
