@@ -10,7 +10,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        include:
+          - os: macos-13  # Use Intel macOS runner
+            platform: mac
+          - os: windows-latest
+            platform: win
+          - os: ubuntu-latest
+            platform: linux
 
     steps:
     - name: Check out Git repository
@@ -27,7 +33,7 @@ jobs:
     - name: Build application
       run: |
         ls -la
-        npm run build -- --x64
+        npm run build:${{ matrix.platform }}
       env:
         # macOS code signing (optional - remove if not using)
         CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
