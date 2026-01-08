@@ -4,7 +4,7 @@
 
 **Status**: `[ ]` Not started `[x]` Complete `[~]` In progress
 
-**Latest Change**: _Advanced sidebar-07 design implemented - professional navigation with collapsible menus_
+**Latest Change**: _Sidebar customized for ChatGPT Archive Reader - file switcher, project groups, standalone messages_
 
 **Current Task**: _Phase 1: Add file upload UI to sidebar header_
 
