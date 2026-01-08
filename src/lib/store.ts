@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { ArchiveFile, ProcessedConversation, ParseError } from '@/lib/types';
+import type { ArchiveFile, ProcessedConversation, ParseError } from '@/lib/types';
 
 interface ArchiveState {
   // File data

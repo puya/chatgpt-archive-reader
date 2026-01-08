@@ -1,7 +1,7 @@
 // Utility functions for processing ChatGPT archive conversations
 // Based on V1 implementation with TypeScript types
 
-import {
+import type {
   Conversation,
   ProcessedConversation,
   ProcessedMessage,
@@ -16,8 +16,8 @@ import {
  * Safely extract nested properties from objects
  */
 export const safeGet = <T>(obj: unknown, path: string, defaultValue: T): T => {
-  return path.split('.').reduce((current, key) =>
-    current && typeof current === 'object' && current !== null && key in current ? (current as Record<string, unknown>)[key] : defaultValue, obj as Record<string, unknown>);
+  return path.split('.').reduce((current: unknown, key: string) =>
+    current && typeof current === 'object' && current !== null && key in current ? (current as Record<string, unknown>)[key] : defaultValue, obj);
 };
 
 /**
@@ -299,12 +299,13 @@ export const validateConversation = (data: unknown): ParseError | null => {
     return { type: 'invalid_json', message: 'Conversation must be an object' };
   }
 
-  if (!data.id) {
-    return { type: 'missing_field', message: 'Conversation missing required field: id', conversationId: data.id };
+  const obj = data as Record<string, unknown>;
+  if (!obj.id) {
+    return { type: 'missing_field', message: 'Conversation missing required field: id', conversationId: String(obj.id) };
   }
 
-  if (!data.mapping || typeof data.mapping !== 'object') {
-    return { type: 'missing_field', message: 'Conversation missing or invalid mapping field', conversationId: data.id };
+  if (!obj.mapping || typeof obj.mapping !== 'object') {
+    return { type: 'missing_field', message: 'Conversation missing or invalid mapping field', conversationId: String(obj.id) };
   }
 
   return null;

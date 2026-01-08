@@ -17,7 +17,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { useArchiveStore, useFilteredConversations } from "@/lib/store"
-import { ProcessedConversation } from "@/lib/types"
+import type { ProcessedConversation } from "@/lib/types"
 
 export function NavProjects() {
   const { currentFile, activeProject, setActiveProject, selectConversation } = useArchiveStore()

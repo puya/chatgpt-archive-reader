@@ -1,4 +1,4 @@
-import * as React from "react"
+// React is not used directly in this component
 import { FileText, Upload, X } from "lucide-react"
 
 import {

@@ -1,7 +1,7 @@
 // File reading utilities for ChatGPT Archive Reader
 // Platform abstraction layer for web and desktop file access
 
-import { ArchiveFile, ParseError } from '@/lib/types';
+import type { ArchiveFile, ParseError } from '@/lib/types';
 import { parseArchiveFile } from './conversation-utils';
 
 /**
@@ -65,7 +65,8 @@ export const readArchiveFile = async (file?: File | string): Promise<FileReadRes
   // Web mode - trigger file picker if no file provided
   if (!file) {
     try {
-      const fileHandles = await (window as unknown as { showOpenFilePicker: (options: unknown) => Promise<unknown[]> }).showOpenFilePicker({
+      const showOpenFilePicker = (window as unknown as { showOpenFilePicker: (options: unknown) => Promise<unknown[]> }).showOpenFilePicker;
+      const fileHandles = await showOpenFilePicker({
         types: [{
           description: 'ChatGPT Archive Files',
           accept: { 'application/json': ['.json'] }
@@ -74,7 +75,7 @@ export const readArchiveFile = async (file?: File | string): Promise<FileReadRes
       });
 
       if (fileHandles && fileHandles.length > 0) {
-        const fileHandle = fileHandles[0];
+        const fileHandle = fileHandles[0] as { getFile: () => Promise<File> };
         const file = await fileHandle.getFile();
         return readFileWeb(file);
       }

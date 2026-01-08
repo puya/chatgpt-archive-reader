@@ -1,7 +1,7 @@
-import * as React from "react"
+// React is not used directly in this component
 import { User, Bot, Calendar } from "lucide-react"
 import { useArchiveStore } from "@/lib/store"
-import { ProcessedMessage } from "@/lib/types"
+import type { ProcessedMessage } from "@/lib/types"
 
 export function ConversationViewer() {
   const { selectedConversation } = useArchiveStore()
