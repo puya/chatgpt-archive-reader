@@ -2,7 +2,7 @@
 
 ## 📋 **Executive Summary**
 
-Transform the current vanilla JavaScript application into a modern, React-based desktop application with enhanced UI/UX, better architecture, and improved developer experience.
+Transform the current vanilla JavaScript application into a modern, React-based application that runs as both a **web app** (for development) and **desktop app** (via Tauri), with enhanced UI/UX, better architecture, and improved developer experience.
 
 ## 🎯 **Current State Analysis**
 
@@ -31,9 +31,22 @@ Transform the current vanilla JavaScript application into a modern, React-based 
 
 ### **Build System & Tooling**
 - **Vite 5+** for fast development and optimized builds
-- **Electron Forge** or **Electron Builder** (enhanced)
+- **Tauri CLI** for desktop app builds
+- **Dual deployment**: Web app + Desktop app
 - **ESLint + Prettier** for code quality
 - **Husky** for git hooks
+
+### **Deployment Options**
+- **Web App**: Deployable to any static hosting (Vercel, Netlify, etc.)
+- **Desktop App**: Native binaries via Tauri (Windows, macOS, Linux)
+- **Development**: Hot-reload web app with `npm run dev`
+
+### **Tauri Architecture**
+- **Rust Backend**: Secure, lightweight system access layer
+- **Web Frontend**: Standard React web app with Tauri's JavaScript API
+- **Security Model**: Granular permissions for file system, dialogs, etc.
+- **Bundle Size**: Significantly smaller than Electron (~4MB vs ~150MB)
+- **Performance**: Native Rust performance with web UI
 
 ### **UI Framework & Styling**
 - **[shadcn/ui](https://ui.shadcn.com/)** - High-quality React components built on Radix UI and Tailwind CSS
@@ -75,13 +88,13 @@ Transform the current vanilla JavaScript application into a modern, React-based 
 
 ```
 chatgpt-archive-reader-v2/
-├── 📦 build/                    # Build configuration
-│   ├── electron/               # Electron main process
-│   ├── vite/                   # Vite configuration
-│   └── scripts/                # Build scripts
-├── 📱 src/                     # React application
+├── 📦 src-tauri/               # Tauri Rust backend
+│   ├── src/                   # Rust source files
+│   ├── Cargo.toml             # Rust dependencies
+│   └── tauri.conf.json        # Tauri configuration
+├── 📱 src/                     # React web application
 │   ├── components/             # Reusable UI components
-│   │   ├── ui/                # Base UI components (Button, Input, etc.)
+│   │   ├── ui/                # shadcn/ui components
 │   │   ├── layout/            # Layout components (Sidebar, Header)
 │   │   ├── conversations/     # Conversation-related components
 │   │   ├── projects/          # Project management components
@@ -90,13 +103,16 @@ chatgpt-archive-reader-v2/
 │   ├── lib/                   # Utilities and helpers
 │   ├── stores/                # Zustand state stores
 │   ├── types/                 # TypeScript type definitions
+│   ├── utils/                 # Web-compatible utilities
 │   ├── App.tsx               # Main App component
 │   └── main.tsx              # React entry point
 ├── 📊 utils/                  # CLI tools (keep existing)
 ├── 🧪 __tests__/              # Test files
 ├── 📚 docs/                   # Documentation
 ├── 🔧 .vscode/                # VS Code settings
-└── ⚙️  Config files           # package.json, tsconfig, etc.
+├── 📦 dist/                   # Web app build output
+├── 🖥️  src-tauri/target/      # Tauri build output
+└── ⚙️  Config files           # package.json, tsconfig, vite.config, etc.
 ```
 
 ---
@@ -397,20 +413,43 @@ interface ThemeStore {
 
 ### **Development Commands**
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run electron     # Start Electron app
-npm run package      # Package for distribution
+# Web App Development (Primary)
+npm run dev          # Start Vite dev server (web app)
+npm run build:web    # Build web app for deployment
+npm run preview      # Preview web app build
+
+# Desktop App (Optional)
+npm run tauri:dev    # Start Tauri desktop app (development)
+npm run tauri:build  # Build desktop app for all platforms
+
+# Testing & Documentation
 npm run test         # Run tests
 npm run storybook    # Start Storybook
+
+# Combined workflows
+npm run build        # Build both web and desktop
+npm run deploy       # Deploy web app + build desktop
 ```
 
-### **Hot Reload & Development**
+### **Dual Development Approach**
+
+#### **Primary: Web App Development**
 - **Vite HMR** for instant React updates
-- **Electron reload** on main process changes
-- **CSS hot reload** with Tailwind
-- **TypeScript checking** in real-time
+- **Standard web development** workflow
+- **Browser debugging** tools
+- **Fast iteration** without desktop app overhead
+
+#### **Secondary: Desktop App (Tauri)**
+- **Tauri dev server** for desktop testing
+- **Native file dialogs** and system integration
+- **Production-ready** desktop experience
+- **Cross-platform** distribution
+
+#### **Unified Development Experience**
+- **Single codebase** for both web and desktop
+- **Conditional logic** for platform-specific features
+- **Tauri API calls** wrapped for web compatibility
+- **Hot reload** works in both environments
 
 ### **Component Development**
 ```bash
@@ -494,18 +533,28 @@ describe('UI Store', () => {
 ### **Phase 1: Foundation (Week 1-2)**
 1. **Set up React 19 + TypeScript + Vite 5+**
 2. **Install and configure shadcn/ui** (review full documentation first)
-3. **Set up sidebar theming** with required CSS variables
-4. **Create basic component structure** using shadcn/ui components
-5. **Migrate core state management** to Zustand
-6. **Implement shadcn/ui Sidebar** as the main navigation component
+3. **Initialize Tauri project**:
+   ```bash
+   npm install -g @tauri-apps/cli
+   npx tauri init
+   ```
+4. **Configure Tauri permissions** in `src-tauri/tauri.conf.json`
+5. **Set up sidebar theming** with required CSS variables
+6. **Create basic component structure** using shadcn/ui components
+7. **Implement platform abstraction layer** for file operations
+8. **Migrate core state management** to Zustand
+9. **Implement shadcn/ui Sidebar** as the main navigation component
 
 ### **Phase 2: Core Features (Week 3-4)**
 1. **Implement shadcn/ui Sidebar** with hierarchical project structure
 2. **Migrate conversation loading/display** using shadcn/ui Card components
 3. **Add integrated search** using shadcn/ui Input in sidebar header
-4. **Implement collapsible project groups** with conversation previews
-5. **Migrate tagging system** using shadcn/ui Badge components
-6. **Add keyboard navigation** support throughout the sidebar
+4. **Implement platform-aware file handling**:
+   - **Web**: File System Access API + drag-and-drop
+   - **Desktop**: Tauri's secure file dialogs
+5. **Implement collapsible project groups** with conversation previews
+6. **Migrate tagging system** using shadcn/ui Badge components
+7. **Add keyboard navigation** support throughout the sidebar
 
 ### **Phase 3: Polish & Testing (Week 5-6)**
 1. Add comprehensive tests
@@ -694,6 +743,70 @@ describe('UI Store', () => {
 - **Keyboard Navigation**: Arrow keys, Enter, Escape support
 - **Responsive Behavior**: Collapses to icons on smaller screens
 - **Accessibility**: Full ARIA compliance via Radix UI primitives
+- **Platform Abstraction**: Unified API for file operations across web/desktop
+
+---
+
+## 🌐 **Web vs Desktop Architecture**
+
+### **Platform Detection & Adaptation**
+```typescript
+// Detect platform and adapt functionality
+const isDesktop = typeof window !== 'undefined' && window.__TAURI__ !== undefined;
+
+if (isDesktop) {
+  // Use Tauri's secure APIs
+  const { open } = window.__TAURI__.dialog;
+  const filePath = await open({
+    multiple: false,
+    filters: [{ name: 'JSON', extensions: ['json'] }]
+  });
+} else {
+  // Use web File System Access API
+  const [fileHandle] = await window.showOpenFilePicker({
+    types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }]
+  });
+  const file = await fileHandle.getFile();
+}
+```
+
+### **Security Model Differences**
+
+#### **Web App (Browser)**
+- **File Access**: File System Access API (user permission required)
+- **Security**: Sandboxed, no direct file system access
+- **Drag & Drop**: Supported for file uploads
+- **Storage**: IndexedDB, LocalStorage, or OPFS (Origin Private File System)
+- **Limitations**: No direct file system writes, CORS restrictions
+
+#### **Desktop App (Tauri)**
+- **File Access**: Direct file system access via Rust backend
+- **Security**: Granular permissions in `tauri.conf.json`
+- **System Integration**: Native file dialogs, system notifications
+- **Storage**: Direct file system access with user permissions
+- **Advantages**: Full file system control, better performance
+
+### **Unified API Layer**
+```typescript
+// src/lib/fileSystem.ts - Platform-agnostic file operations
+export const fileSystem = {
+  async openFile(): Promise<FileData> {
+    if (isDesktop) {
+      return tauriFileSystem.openFile();
+    } else {
+      return webFileSystem.openFile();
+    }
+  },
+
+  async saveTags(tags: TagData): Promise<void> {
+    if (isDesktop) {
+      return tauriFileSystem.saveTags(tags);
+    } else {
+      return webFileSystem.saveTags(tags);
+    }
+  }
+};
+```
 
 #### **CSS Variables Setup:**
 ```css
@@ -727,14 +840,18 @@ describe('UI Store', () => {
 ## 💡 **Risk Mitigation**
 
 ### **Technical Risks**
-- **Electron + React compatibility** → Test early, use proven patterns
-- **Bundle size** → Code splitting, lazy loading
-- **Performance** → Virtual scrolling, memoization
+- **Tauri + React compatibility** → Test early, use proven patterns
+- **Web/Desktop feature parity** → Abstract platform differences properly
+- **Bundle size** → Code splitting, lazy loading, tree shaking
+- **Performance** → Virtual scrolling, memoization, shadcn/ui optimization
+- **Security model differences** → Careful permission handling between web/desktop
 
 ### **Migration Risks**
-- **Data compatibility** → Maintain same IPC interfaces
-- **Feature parity** → Comprehensive testing against V1
+- **Data compatibility** → Maintain same file format and structure
+- **Platform abstraction** → Ensure web and desktop work identically
+- **Feature parity** → Comprehensive testing against V1 on both platforms
 - **Breaking changes** → Gradual migration with fallbacks
+- **Tauri learning curve** → Rust backend vs Node.js familiarity
 
 ### **Team Risks**
 - **Learning curve** → TypeScript/React training
