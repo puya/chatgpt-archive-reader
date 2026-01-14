@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
+import Fuse from 'fuse.js';
 import type { ArchiveFile, ProcessedConversation, ParseError } from '@/lib/types';
 
 interface ArchiveState {
@@ -118,20 +119,27 @@ export const useFilteredConversations = () => {
 
   let conversations = currentFile.conversations;
 
-  // Filter by project
+  // Filter by project first
   if (activeProject === 'standalone') {
     conversations = conversations.filter(conv => !conv.gizmo_id);
   } else if (activeProject) {
     conversations = conversations.filter(conv => conv.gizmo_id === activeProject);
   }
 
-  // Filter by search term
+  // Filter by search term using Fuse.js for fuzzy search
   if (searchTerm.trim()) {
-    const term = searchTerm.toLowerCase();
-    conversations = conversations.filter(conv =>
-      (conv.title && conv.title.toLowerCase().includes(term)) ||
-      conv.messages.some(msg => msg.content.toLowerCase().includes(term))
-    );
+    const fuse = new Fuse(conversations, {
+      keys: [
+        { name: 'title', weight: 0.7 },
+        { name: 'messages.content', weight: 0.3 }
+      ],
+      threshold: 0.4, // Lower = more strict, higher = more lenient
+      includeScore: true,
+      shouldSort: true,
+    });
+
+    const searchResults = fuse.search(searchTerm);
+    conversations = searchResults.map(result => result.item);
   }
 
   return conversations;
@@ -171,4 +179,13 @@ export const useAllTags = () => {
   });
 
   return Array.from(allTags).sort();
+};
+
+export const useSearchResultsCount = () => {
+  const filtered = useFilteredConversations();
+  const { searchTerm } = useArchiveStore();
+
+  if (!searchTerm.trim()) return null;
+
+  return filtered.length;
 };

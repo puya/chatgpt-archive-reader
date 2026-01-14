@@ -111,11 +111,11 @@ _Goal: Display conversations from uploaded JSON with basic message rendering_
 
 _Goal: Add search, better message formatting, and improved UX_
 
-- [ ] Search functionality
-  - [ ] Add search input to sidebar header
-  - [ ] Implement real-time conversation filtering
-  - [ ] Highlight search terms in message content
-  - [ ] Show search result count
+- [x] Search functionality
+  - [x] Add search input to sidebar header
+  - [x] Implement real-time conversation filtering
+  - [x] Highlight search terms in message content
+  - [x] Show search result count
 - [ ] Message formatting improvements
   - [ ] Add syntax highlighting for code blocks
   - [ ] Better text formatting (links, lists, etc.)

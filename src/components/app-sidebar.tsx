@@ -1,6 +1,7 @@
 import * as React from "react"
 import { FileSwitcher } from "@/components/file-switcher"
 import { NavProjects } from "@/components/nav-projects"
+import { SearchInput } from "@/components/search-input"
 import {
   Sidebar,
   SidebarContent,
@@ -8,15 +9,29 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { useArchiveStore } from "@/lib/store"
+import { useArchiveStore, useSearchResultsCount } from "@/lib/store"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { currentFile, loadError, parseErrors } = useArchiveStore()
+  const { currentFile, loadError, parseErrors, searchTerm, setSearchTerm } = useArchiveStore()
+  const searchResultsCount = useSearchResultsCount()
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <FileSwitcher />
+        {currentFile && (
+          <div className="px-4 pb-2">
+            <SearchInput
+              value={searchTerm}
+              onChange={setSearchTerm}
+            />
+            {searchResultsCount !== null && (
+              <div className="text-xs text-muted-foreground mt-1">
+                {searchResultsCount} result{searchResultsCount !== 1 ? 's' : ''} found
+              </div>
+            )}
+          </div>
+        )}
         {loadError && (
           <div className="px-4 py-2 text-xs text-red-600 bg-red-50 rounded-md mx-2">
             Error: {loadError}
