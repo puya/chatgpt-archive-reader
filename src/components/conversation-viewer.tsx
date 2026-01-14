@@ -1,10 +1,32 @@
-// React is not used directly in this component
+import { useEffect, useRef } from "react"
 import { User, Bot, Calendar } from "lucide-react"
 import { useArchiveStore } from "@/lib/store"
 import type { ProcessedMessage } from "@/lib/types"
 
 export function ConversationViewer() {
-  const { selectedConversation } = useArchiveStore()
+  const { selectedConversation, searchTerm } = useArchiveStore()
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to first search match when conversation changes
+  useEffect(() => {
+    if (!selectedConversation || !searchTerm.trim() || !messagesContainerRef.current) return
+
+    // Find the first message that contains the search term
+    const firstMatchingMessageIndex = selectedConversation.messages.findIndex(message =>
+      message.content.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    if (firstMatchingMessageIndex >= 0) {
+      // Scroll to the message after a short delay to allow rendering
+      setTimeout(() => {
+        const messageElements = messagesContainerRef.current?.querySelectorAll('[data-message-index]')
+        const targetElement = messageElements?.[firstMatchingMessageIndex] as HTMLElement
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 100)
+    }
+  }, [selectedConversation, searchTerm])
 
   if (!selectedConversation) {
     return (
@@ -55,7 +77,7 @@ export function ConversationViewer() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {selectedConversation.messages.length === 0 ? (
           <div className="text-center text-muted-foreground">
             No messages found in this conversation
@@ -66,6 +88,8 @@ export function ConversationViewer() {
               key={`${message.id}-${index}`}
               message={message}
               isLast={index === selectedConversation.messages.length - 1}
+              searchTerm={searchTerm}
+              messageIndex={index}
             />
           ))
         )}
@@ -77,13 +101,36 @@ export function ConversationViewer() {
 interface MessageBubbleProps {
   message: ProcessedMessage
   isLast: boolean
+  searchTerm: string
+  messageIndex: number
 }
 
-function MessageBubble({ message, isLast }: MessageBubbleProps) {
+// Function to highlight search terms in text
+function highlightSearchTerm(text: string, searchTerm: string): React.ReactNode {
+  if (!searchTerm.trim()) return text
+
+  const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  const parts = text.split(regex)
+
+  return parts.map((part, index) =>
+    regex.test(part) ? (
+      <mark key={index} className="bg-yellow-200 dark:bg-yellow-600 px-0.5 rounded">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  )
+}
+
+function MessageBubble({ message, isLast, searchTerm, messageIndex }: MessageBubbleProps) {
   const isUser = message.role === 'user'
 
   return (
-    <div className={`flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div
+      data-message-index={messageIndex}
+      className={`flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}
+    >
       {!isUser && (
         <div className="flex-shrink-0">
           <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -99,7 +146,7 @@ function MessageBubble({ message, isLast }: MessageBubbleProps) {
             : 'bg-muted'
         }`}>
           <div className="text-sm whitespace-pre-wrap break-words">
-            {message.content}
+            {highlightSearchTerm(message.content, searchTerm)}
           </div>
         </div>
 

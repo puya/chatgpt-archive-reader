@@ -16,7 +16,7 @@ import { useArchiveStore, useFilteredConversations } from "@/lib/store"
 import type { ProcessedConversation } from "@/lib/types"
 
 export function NavProjects() {
-  const { currentFile, activeProject, selectedConversation, setActiveProject, selectConversation } = useArchiveStore()
+  const { currentFile, activeProject, selectedConversation, setActiveProject, selectConversation, searchTerm, expandedProjects, toggleProjectExpansion } = useArchiveStore()
   const filteredConversations = useFilteredConversations()
 
   // Group FILTERED conversations by project for sidebar display
@@ -42,7 +42,13 @@ export function NavProjects() {
   }, [currentFile, filteredConversations])
 
   const handleProjectClick = (projectId: string) => {
-    setActiveProject(activeProject === projectId ? null : projectId)
+    // When searching, clicking a project toggles its expansion visually
+    // When not searching, clicking filters to that project
+    if (searchTerm.trim()) {
+      toggleProjectExpansion(projectId);
+    } else {
+      setActiveProject(activeProject === projectId ? null : projectId);
+    }
   }
 
   const handleConversationClick = (conversation: ProcessedConversation) => {
@@ -86,16 +92,17 @@ export function NavProjects() {
           {Object.entries(groupedConversations.projects).map(([projectId, conversations]) => {
             const project = currentFile.projects[projectId]
             const isActive = activeProject === projectId
+            const isExpanded = searchTerm.trim() ? expandedProjects.has(projectId) : isActive
 
             return (
-              <Collapsible key={projectId} asChild defaultOpen={isActive}>
+              <Collapsible key={projectId} asChild defaultOpen={isExpanded}>
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
                       onClick={() => handleProjectClick(projectId)}
                       isActive={isActive}
                     >
-                      {isActive ? (
+                      {isExpanded ? (
                         <FolderOpen className="size-4" />
                       ) : (
                         <Folder className="size-4" />

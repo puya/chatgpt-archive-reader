@@ -16,6 +16,7 @@ interface ArchiveState {
   selectedConversation: ProcessedConversation | null;
   activeProject: string | null; // gizmo_id or null for all, 'standalone' for ungrouped
   searchTerm: string;
+  expandedProjects: Set<string>; // Projects expanded in sidebar (separate from filtering)
 
   // Tag management (for future implementation)
   conversationTags: Record<string, string[]>;
@@ -28,6 +29,7 @@ interface ArchiveState {
   selectConversation: (conversation: ProcessedConversation | null) => void;
   setActiveProject: (projectId: string | null) => void;
   setSearchTerm: (term: string) => void;
+  toggleProjectExpansion: (projectId: string) => void;
   addTag: (conversationId: string, tag: string) => void;
   removeTag: (conversationId: string, tag: string) => void;
   clearData: () => void;
@@ -43,6 +45,7 @@ export const useArchiveStore = create<ArchiveState>()(
     selectedConversation: null,
     activeProject: null,
     searchTerm: '',
+    expandedProjects: new Set<string>(),
     conversationTags: {},
 
     // Actions
@@ -71,6 +74,16 @@ export const useArchiveStore = create<ArchiveState>()(
     setSearchTerm: (term) => set({
       searchTerm: term,
       selectedConversation: null // Clear selection when searching
+    }),
+
+    toggleProjectExpansion: (projectId) => set((state) => {
+      const newExpanded = new Set(state.expandedProjects);
+      if (newExpanded.has(projectId)) {
+        newExpanded.delete(projectId);
+      } else {
+        newExpanded.add(projectId);
+      }
+      return { expandedProjects: newExpanded };
     }),
 
     addTag: (conversationId, tag) => {
@@ -106,6 +119,7 @@ export const useArchiveStore = create<ArchiveState>()(
       selectedConversation: null,
       activeProject: null,
       searchTerm: '',
+      expandedProjects: new Set<string>(),
       conversationTags: {}
     })
   }))
