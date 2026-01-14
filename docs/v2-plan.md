@@ -116,6 +116,8 @@ _Goal: Add search, better message formatting, and improved UX_
   - [x] Implement real-time conversation filtering
   - [x] Highlight search terms in message content
   - [x] Show search result count
+  - [x] Smart project expansion during search (expand/collapse without filtering)
+  - [x] Auto-scroll to first search match in conversation
 - [ ] Message formatting improvements
   - [ ] Add syntax highlighting for code blocks
   - [ ] Better text formatting (links, lists, etc.)
