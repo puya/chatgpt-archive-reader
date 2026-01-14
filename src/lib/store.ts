@@ -119,16 +119,9 @@ export const useFilteredConversations = () => {
 
   let conversations = currentFile.conversations;
 
-  // Filter by project first
-  if (activeProject === 'standalone') {
-    conversations = conversations.filter(conv => !conv.gizmo_id);
-  } else if (activeProject) {
-    conversations = conversations.filter(conv => conv.gizmo_id === activeProject);
-  }
-
-  // Filter by search term using Fuse.js for fuzzy search
+  // If there's a search term, search across ALL conversations first
   if (searchTerm.trim()) {
-    const fuse = new Fuse(conversations, {
+    const fuse = new Fuse(currentFile.conversations, {
       keys: [
         { name: 'title', weight: 0.7 },
         { name: 'messages.content', weight: 0.3 }
@@ -140,6 +133,20 @@ export const useFilteredConversations = () => {
 
     const searchResults = fuse.search(searchTerm);
     conversations = searchResults.map(result => result.item);
+
+    // After search, still apply project filter if one is active
+    if (activeProject === 'standalone') {
+      conversations = conversations.filter(conv => !conv.gizmo_id);
+    } else if (activeProject) {
+      conversations = conversations.filter(conv => conv.gizmo_id === activeProject);
+    }
+  } else {
+    // No search term - just filter by project
+    if (activeProject === 'standalone') {
+      conversations = conversations.filter(conv => !conv.gizmo_id);
+    } else if (activeProject) {
+      conversations = conversations.filter(conv => conv.gizmo_id === activeProject);
+    }
   }
 
   return conversations;

@@ -12,20 +12,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useArchiveStore } from "@/lib/store"
+import { useArchiveStore, useFilteredConversations } from "@/lib/store"
 import type { ProcessedConversation } from "@/lib/types"
 
 export function NavProjects() {
   const { currentFile, activeProject, selectedConversation, setActiveProject, selectConversation } = useArchiveStore()
+  const filteredConversations = useFilteredConversations()
 
-  // Group ALL conversations by project for sidebar display (not filtered)
+  // Group FILTERED conversations by project for sidebar display
   const groupedConversations = React.useMemo(() => {
     if (!currentFile) return { projects: {}, standalone: [] }
 
     const projects: Record<string, ProcessedConversation[]> = {}
     const standalone: ProcessedConversation[] = []
 
-    currentFile.conversations.forEach(conv => {
+    // Only include conversations that are in the filtered results
+    filteredConversations.forEach(conv => {
       if (conv.gizmo_id && currentFile.projects[conv.gizmo_id]) {
         if (!projects[conv.gizmo_id]) {
           projects[conv.gizmo_id] = []
@@ -37,7 +39,7 @@ export function NavProjects() {
     })
 
     return { projects, standalone }
-  }, [currentFile])
+  }, [currentFile, filteredConversations])
 
   const handleProjectClick = (projectId: string) => {
     setActiveProject(activeProject === projectId ? null : projectId)
