@@ -118,6 +118,8 @@ _Goal: Add search, better message formatting, and improved UX_
   - [x] Show search result count
   - [x] Smart project expansion during search (expand/collapse without filtering)
   - [x] Auto-scroll to first search match in conversation
+  - [x] Floating navigation buttons for search matches (next/prev)
+  - [x] Current match highlighting with match counter
 - [ ] Message formatting improvements
   - [ ] Add syntax highlighting for code blocks
   - [ ] Better text formatting (links, lists, etc.)

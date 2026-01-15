@@ -140,7 +140,7 @@ export const useFilteredConversations = () => {
         { name: 'title', weight: 0.7 },
         { name: 'messages.content', weight: 0.3 }
       ],
-      threshold: 0.4, // Lower = more strict, higher = more lenient
+      threshold: 0.0, // Exact matches only (no typos allowed)
       includeScore: true,
       shouldSort: true,
     });
